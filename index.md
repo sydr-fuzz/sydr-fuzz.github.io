@@ -1,3 +1,7 @@
+---
+title: Sydr
+---
+
 # About
 
 **Sydr** is a dynamic symbolic execution tool that explores new paths and
@@ -27,8 +31,6 @@ Our mission is discovering new bugs in open source projects via hybrid fuzzing
 * Fuzzing xlnt project with sydr-fuzz for fun and profit (libFuzzer)
   \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-xlnt-project-with-sydr-fuzz-for-fun-and-profit)\] \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-xlnt-project-with-sydr-fuzz-for-fun-and-profit-%28rus%29)\]
 * Fuzzzing FreeImage project with Sydr and AFLplusplus \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzzing-FreeImage-project-with-Sydr-and-AFLplusplus)\] \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzzing-FreeImage-project-with-Sydr-and-AFLplusplus-%28rus%29)\]
-
-# Trophies
 
 # Publications and Talks
 
