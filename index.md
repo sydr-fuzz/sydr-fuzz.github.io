@@ -18,13 +18,17 @@ implements the following fuzzing pipeline:
 * Hybrid fuzzing with Sydr and libFuzzer/AFL++: `sydr-fuzz run`
 * Corpus minimization: `sydr-fuzz cmin`
 * Error detection (out of bounds, integer overflow, division by zero, etc.) via
-  symbolic security predicates: `sydr-fuzz security`
+  [symbolic security predicates](https://arxiv.org/abs/2111.05770):
+  `sydr-fuzz security`
 * Collecting coverage: `sydr-fuzz cov-report`
 * Crash triaging, deduplication, and clustering with
   [Casr](https://arxiv.org/abs/2112.13719): `sydr-fuzz casr`
 
 Our mission is discovering new bugs in open source projects via hybrid fuzzing
-([OSS-Sydr-Fuzz](https://github.com/ispras/oss-sydr-fuzz)).
+([OSS-Sydr-Fuzz](https://github.com/ispras/oss-sydr-fuzz)). We already found a
+significant number of
+[trophies](https://github.com/ispras/oss-sydr-fuzz/blob/master/TROPHIES.md).
+Moreover, we [compare](fuzzbench) Sydr-fuzz with existing fuzzers.
 
 # Guides
 
@@ -38,6 +42,9 @@ Our mission is discovering new bugs in open source projects via hybrid fuzzing
 
 * [OSS-Sydr-Fuzz](https://github.com/ispras/oss-sydr-fuzz): Hybrid Fuzzing for
   Open Source Software
-* [gdb-command](https://github.com/anfedotoff/gdb-command)
-* [Juliet C/C++ Dynamic Test Suite](https://github.com/ispras/juliet-dynamic)
-* [sydr-benchmark](https://github.com/ispras/sydr-benchmark)
+* [gdb-command](https://github.com/anfedotoff/gdb-command): Rust Library for
+  Manipulating GDB in Batch Mode
+* [Juliet C/C++ Dynamic Test Suite](https://github.com/ispras/juliet-dynamic):
+  Evaluating Dynamic Analysis Tools on Juliet
+* [sydr-benchmark](https://github.com/ispras/sydr-benchmark): Benchmarking
+  Dynamic Symbolic Execution
