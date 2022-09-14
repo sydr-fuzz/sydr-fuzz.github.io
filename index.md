@@ -11,9 +11,9 @@ enables [error detection](https://arxiv.org/abs/2111.05770). Sydr uses
 
 **Sydr-fuzz** is a dynamic analysis tool for security development lifecycle. It
 combines fuzzing ([libFuzzer](https://www.llvm.org/docs/LibFuzzer.html),
-[AFL++](https://github.com/AFLplusplus/AFLplusplus)) with the power of dynamic
-symbolic execution ([Sydr](https://arxiv.org/abs/2011.09269)). Sydr-fuzz
-implements the following fuzzing pipeline:
+[AFL++](https://aflplus.plus)) with the power of dynamic symbolic execution
+([Sydr](https://arxiv.org/abs/2011.09269)). Sydr-fuzz implements the following
+fuzzing pipeline:
 
 * Hybrid fuzzing with Sydr and libFuzzer/AFL++: `sydr-fuzz run`
 * Corpus minimization: `sydr-fuzz cmin`
