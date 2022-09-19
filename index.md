@@ -71,6 +71,7 @@ Moreover, we [compare](fuzzbench) Sydr-fuzz with existing fuzzers.
 * Parygina D., Vishnyakov A., Fedotov A. Strong Optimistic Solving for Dynamic
   Symbolic Execution. 2022 Ivannikov Memorial Workshop.
   \[[paper](https://arxiv.org/abs/2209.03710)\]
+  \[[slides](/papers/parygina-ivmem2022.pdf)\]
 
 # Open Source Projects
 
