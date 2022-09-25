@@ -56,7 +56,7 @@ Moreover, we [compare](fuzzbench) Sydr-fuzz with existing fuzzers.
   Open Conference.
   \[[paper](https://arxiv.org/abs/2111.05770)\]
   \[[slides](https://vishnya.xyz/vishnyakov-isprasopen2021.pdf)\]
-  \[[video](https://youtu.be/CI-Zioq5G84?t=6583)\]
+  \[[russian&nbsp;video](https://youtu.be/CI-Zioq5G84?t=6583)\]
 * Savidov G., Fedotov A. Casr-Cluster: Crash Clustering for Linux Applications.
   2021 Ivannikov ISPRAS Open Conference.
   \[[paper](https://arxiv.org/abs/2112.13719)\]
@@ -68,10 +68,19 @@ Moreover, we [compare](fuzzbench) Sydr-fuzz with existing fuzzers.
   dynamic symbolic execution. Proceedings of ISP RAS, 2022.
   \[[russian&nbsp;paper](https://ispranproceedings.elpub.ru/jour/article/view/1512/1346)\]
   \[[russian&nbsp;slides](https://vishnya.xyz/vishnyakov-mitsobi2022.pdf)\]
+* Fedotov A. Sydr: Dynamic Analysis Technology. IVMEM 2022 Plenum.
+  \[[russian&nbsp;slides](/papers/fedotov-plenum-sydr-ivmem2022.pdf)\]
+  \[[russian&nbsp;video](https://youtu.be/L7ZRV2Voee4?t=5652)\]
+* Fedotov A. Sydr: SDL for Artificial Intelligence. IVMEM 2022 Plenum.
+  \[[russian&nbsp;slides](/papers/fedotov-plenum-sdlai-ivmem2022.pdf)\]
+  \[[russian&nbsp;video](https://youtu.be/L7ZRV2Voee4?t=7658)\]
 * Parygina D., Vishnyakov A., Fedotov A. Strong Optimistic Solving for Dynamic
   Symbolic Execution. 2022 Ivannikov Memorial Workshop.
   \[[paper](https://arxiv.org/abs/2209.03710)\]
   \[[slides](/papers/parygina-ivmem2022.pdf)\]
+  \[[russian&nbsp;video](https://youtu.be/L7ZRV2Voee4?t=14710)\]
+* Fedotov A. Sydr: Hybrid Fuzzing. IVMEM 2022 Cybersecurity Round Table.
+  \[[russian&nbsp;slides](/papers/fedotov-cybersec-ivmem2022.pdf)\]
 
 # Open Source Projects
 
