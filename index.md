@@ -22,7 +22,7 @@ fuzzing pipeline:
   `sydr-fuzz security`
 * Collecting coverage: `sydr-fuzz cov-report`
 * Crash triaging, deduplication, and clustering with
-  [Casr](https://arxiv.org/abs/2112.13719): `sydr-fuzz casr`
+  [Casr](https://github.com/ispras/casr): `sydr-fuzz casr`
 
 Our mission is discovering new bugs in open source projects via hybrid fuzzing
 ([OSS-Sydr-Fuzz](https://github.com/ispras/oss-sydr-fuzz)). We already found a
@@ -86,6 +86,7 @@ Moreover, we [compare](fuzzbench) Sydr-fuzz with existing fuzzers.
 
 * [OSS-Sydr-Fuzz](https://github.com/ispras/oss-sydr-fuzz): Hybrid Fuzzing for
   Open Source Software
+* [CASR](https://github.com/ispras/casr): Crash Analysis and Severity Report
 * [gdb-command](https://github.com/anfedotoff/gdb-command): Rust Library for
   Manipulating GDB in Batch Mode
 * [Juliet C/C++ Dynamic Test Suite](https://github.com/ispras/juliet-dynamic):
