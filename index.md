@@ -85,6 +85,7 @@ Moreover, we [compare](fuzzbench) Sydr-fuzz with existing fuzzers.
   Fedotov A. Sydr-Fuzz: Continuous Hybrid Fuzzing and Dynamic Analysis for
   Security Development Lifecycle. 2022 Ivannikov ISPRAS Open Conference.
   \[[paper](https://arxiv.org/abs/2211.11595)\]
+  \[[slides](https://vishnya.xyz/vishnyakov-isprasopen2022.pdf)\]
 
 # Open Source Projects
 
