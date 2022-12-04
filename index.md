@@ -86,6 +86,7 @@ Moreover, we [compare](fuzzbench) Sydr-fuzz with existing fuzzers.
   Security Development Lifecycle. 2022 Ivannikov ISPRAS Open Conference.
   \[[paper](https://arxiv.org/abs/2211.11595)\]
   \[[slides](https://vishnya.xyz/vishnyakov-isprasopen2022.pdf)\]
+  \[[russian&nbsp;video](https://youtu.be/qw_tzzgX04E?t=16813)\]
 
 # Open Source Projects
 
