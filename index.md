@@ -81,6 +81,12 @@ Moreover, we [compare](fuzzbench) Sydr-fuzz with existing fuzzers.
   \[[russian&nbsp;video](https://youtu.be/L7ZRV2Voee4?t=14710)\]
 * Fedotov A. Sydr: Hybrid Fuzzing. IVMEM 2022 Cybersecurity Round Table.
   \[[russian&nbsp;slides](/papers/fedotov-cybersec-ivmem2022.pdf)\]
+* Fedotov A. Sydr & CASR: Dynamic Analysis for SDL. ISPRAS Open 2022 Trusted
+  Software Development.
+  \[[russian&nbsp;slides](/papers/fedotov-cybersec-isprasopen2022.pdf)\]
+* Fedotov A. Development of Trusted Machine Learning Frameworks. ISPRAS Open 2022 Trusted AI.
+  \[[russian&nbsp;slides](/papers/fedotov-sdlai-isprasopen2022.pdf)\]
+  \[[russian&nbsp;video](https://youtu.be/4SglZ8f4R5k?t=7684)\]
 * Vishnyakov A., Kuts D., Logunova V., Parygina D., Kobrin E., Savidov G.,
   Fedotov A. Sydr-Fuzz: Continuous Hybrid Fuzzing and Dynamic Analysis for
   Security Development Lifecycle. 2022 Ivannikov ISPRAS Open Conference.
