@@ -36,6 +36,18 @@ Moreover, we [compare](fuzzbench) Sydr-fuzz with existing fuzzers.
   \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-xlnt-project-with-sydr-fuzz-for-fun-and-profit)\] \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-xlnt-project-with-sydr-fuzz-for-fun-and-profit-%28rus%29)\]
 * Fuzzzing FreeImage project with Sydr and AFLplusplus \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzzing-FreeImage-project-with-Sydr-and-AFLplusplus)\] \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzzing-FreeImage-project-with-Sydr-and-AFLplusplus-%28rus%29)\]
 
+# Open Source Projects
+
+* [OSS-Sydr-Fuzz](https://github.com/ispras/oss-sydr-fuzz): Hybrid Fuzzing for
+  Open Source Software
+* [CASR](https://github.com/ispras/casr): Crash Analysis and Severity Report
+* [gdb-command](https://github.com/anfedotoff/gdb-command): Rust Library for
+  Manipulating GDB in Batch Mode
+* [Juliet C/C++ Dynamic Test Suite](https://github.com/ispras/juliet-dynamic):
+  Evaluating Dynamic Analysis Tools on Juliet
+* [sydr-benchmark](https://github.com/ispras/sydr-benchmark): Benchmarking
+  Dynamic Symbolic Execution
+
 # Publications and Talks
 
 * Vishnyakov A., Fedotov A., Kuts D., Novikov A., Parygina D., Kobrin E.,
@@ -93,15 +105,3 @@ Moreover, we [compare](fuzzbench) Sydr-fuzz with existing fuzzers.
   \[[paper](https://arxiv.org/abs/2211.11595)\]
   \[[slides](https://vishnya.xyz/vishnyakov-isprasopen2022.pdf)\]
   \[[russian&nbsp;video](https://youtu.be/qw_tzzgX04E?t=16813)\]
-
-# Open Source Projects
-
-* [OSS-Sydr-Fuzz](https://github.com/ispras/oss-sydr-fuzz): Hybrid Fuzzing for
-  Open Source Software
-* [CASR](https://github.com/ispras/casr): Crash Analysis and Severity Report
-* [gdb-command](https://github.com/anfedotoff/gdb-command): Rust Library for
-  Manipulating GDB in Batch Mode
-* [Juliet C/C++ Dynamic Test Suite](https://github.com/ispras/juliet-dynamic):
-  Evaluating Dynamic Analysis Tools on Juliet
-* [sydr-benchmark](https://github.com/ispras/sydr-benchmark): Benchmarking
-  Dynamic Symbolic Execution
