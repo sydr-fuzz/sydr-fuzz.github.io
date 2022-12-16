@@ -105,3 +105,8 @@ Moreover, we [compare](fuzzbench) Sydr-fuzz with existing fuzzers.
   \[[paper](https://arxiv.org/abs/2211.11595)\]
   \[[slides](https://vishnya.xyz/vishnyakov-isprasopen2022.pdf)\]
   \[[russian&nbsp;video](https://youtu.be/qw_tzzgX04E?t=16813)\]
+* Vishnyakov A. Error detection in binary code with dynamic symbolic execution.
+  PhD thesis.
+  \[[russian&nbsp;thesis](https://vishnya.xyz/vishnyakov-phd-thesis2022.pdf)\]
+  \[[russian&nbsp;synopsis](https://vishnya.xyz/vishnyakov-phd-synopsis2022.pdf)\]
+  \[[russian&nbsp;slides](https://vishnya.xyz/vishnyakov-phd-thesis2022-presentation.pdf)\]
