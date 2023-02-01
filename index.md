@@ -35,6 +35,8 @@ Moreover, we [compare](fuzzbench) Sydr-fuzz with existing fuzzers.
 * Fuzzing xlnt project with sydr-fuzz for fun and profit (libFuzzer)
   \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-xlnt-project-with-sydr-fuzz-for-fun-and-profit)\] \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-xlnt-project-with-sydr-fuzz-for-fun-and-profit-%28rus%29)\]
 * Fuzzzing FreeImage project with Sydr and AFLplusplus \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzzing-FreeImage-project-with-Sydr-and-AFLplusplus)\] \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzzing-FreeImage-project-with-Sydr-and-AFLplusplus-%28rus%29)\]
+* Fuzzing goblin (Rust:crab:!) project with Sydr and AFLplusplus \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-goblin-%28Rust%3Acrab%3A%21%29-project-with-Sydr-and-AFLplusplus)\] \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-goblin-%28Rust%3Acrab%3A%21%29-project-with-Sydr-and-AFLplusplus-%28rus%29)\]
+* Fuzzing ruamel-yaml (Python) project with  sydr-fuzz (Atheris backend) \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-ruamel-yaml-%28Python%29-project-with--sydr-fuzz-%28Atheris-backend%29)\] \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-ruamel-yaml-%28Python%29-project-with--sydr-fuzz-%28Atheris-backend%29-%28rus%29)\]
 
 # Open Source Projects
 
