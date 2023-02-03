@@ -30,6 +30,9 @@
 Список трофеев можно найти в репозитории
 [OSS-Sydr-Fuzz](https://github.com/ispras/oss-sydr-fuzz/blob/master/TROPHIES.md).
 
+* TOC
+{:toc}
+
 # Минимальные системные требования
 
 - Операционная система: Ubuntu 18.04/20.04, Astra 1.7, ALT Workstation 10.0 и
