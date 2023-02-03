@@ -30,7 +30,9 @@
 Список трофеев можно найти в репозитории
 [OSS-Sydr-Fuzz](https://github.com/ispras/oss-sydr-fuzz/blob/master/TROPHIES.md).
 
-* TOC
+# Оглавление
+
+1. TOC
 {:toc}
 
 # Минимальные системные требования
