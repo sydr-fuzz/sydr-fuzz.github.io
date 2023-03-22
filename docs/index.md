@@ -86,13 +86,15 @@ ptrace: Пуск -> Панель управления -> Безопасност�
 
 # Использование sydr-fuzz
 
-Рекомендуется воспользоваться нашим докером `sydr/ubuntu20.04-sydr-fuzz`
-(который можно найти в
+Рекомендуется воспользоваться нашим докером `sydr/ubuntu20.04-sydr-fuzz`.
+Докер можно выкачать с помощью команды:
 
-`docker/ubuntu20.04-sydr-fuzz/Dockerfile`) и запускать
-гибридный фаззинг внутри него. Дальнейшая документация основывается на
-использовании нашего докера. Далее перечислены зависимости, которые нужно
-установить, если запуск производится на другой системе.
+    $ docker pull sydr/ubuntu20.04-sydr-fuzz
+
+`DockerFile` можно найти [тут](https://github.com/ispras/oss-sydr-fuzz/blob/master/docker/ubuntu20.04-sydr-fuzz/Dockerfile).
+Затем запускать гибридный фаззинг внутри него. Дальнейшая документация
+основывается на использовании нашего докера. Далее перечислены зависимости,
+которые нужно установить, если запуск производится на другой системе.
 
 ## Зависимости libFuzzer
 
@@ -157,6 +159,7 @@ AFL++ активно разрабатывается, поэтому желате
         help          Print this message or the help of the given subcommand(s)
         pycov         Collect and export corpus coverage in specified format for Python
                       targets
+        rm-crashes    Remove crashes from corpus
         run           Run hybrid fuzzing with Sydr and libFuzzer/AFL++ or Python fuzzing
                       with Atheris
         security      Check security predicates (out of bounds, integer overflow, division
@@ -271,6 +274,45 @@ sydr-fuzz будет завершена.
 представляют собой соответствующие опции и аргументы
 [Coverage](https://coverage.readthedocs.io/en/latest/cmd.html).
 
+### Сбор покрытия (Go)
+
+Сбор покрытия после фаззинга с помощью
+[go-fuzz](https://github.com/dvyukov/go-fuzz) и движка libFuzzer (данный способ
+фаззинга поддерживается через sydr-fuzz) осуществляется следующим образом:
+
+Переходим в директорию, содержащую исходный код проекта, для которого
+осуществлялся фаззинг. Пример:
+
+    # cd /image
+
+Копируем полученный после фаззинга корпус в директорию `corpus`, созданную в
+корне репозитория с проектом. Пример:
+
+    # cp -r /fuzz/webp-out/corpus /image/corpus
+
+Собираем цель для go-fuzz без поддержки libFuzzer:
+
+    # go-fuzz-build -func=FuzzWebp -o fuzz_webp.zip
+
+Запускаем фаззинг с опцией сбора покрытия, ждём пока импортируется корпус. После
+этого завершаем фаззинг. Можно нажать Ctrl+C, когда более 10 секунд не растет
+покрытие `cover` и `corpus` не меньше размера корпуса в сообщениях вида
+`2023/03/03 17:09:40 workers: 12, corpus: 834 (34s ago), crashers: 2, restarts:
+1/5587, execs: 1033722 (21528/sec), cover: 1309, uptime: 48s`
+
+    # go-fuzz -bin=fuzz_webp.zip -dumpcover
+
+Исправляем файл с покрытием с помощью sed:
+
+    # sed -i '/0.0,1.1/d' coverprofile
+
+Генерируем отчёт о покрытии:
+
+```
+# go tool cover -html=coverprofile
+HTML output written to /tmp/cover2240572277/coverage.html
+```
+
 ### Опции проверки предикатов безопасности (C/C++/Rust/Go)
 
     $ sydr-fuzz security -h
@@ -301,7 +343,7 @@ sydr-fuzz прекратит работу.
 
 ### Опции запуска анализа аварийных завершений с помощью Casr
 
-    $ sydr-fuzz casr
+    $ sydr-fuzz casr -h
     sydr-fuzz-casr
     Triage, deduplicate, cluster crashes and create reports
 
@@ -338,6 +380,33 @@ sydr-fuzz прекратит работу.
 
 Опция **-t, \--timeout \<SECONDS\>** - позволяет установить тайм-аут на выполнение фаззинг
 цели под casr-san/casr-gdb (по умолчанию 30 секунд).
+
+### Опции удаления аварийных завершений из корпуса
+
+    $ sydr-fuzz rm-crashes -h
+    sydr-fuzz-rm-crashes
+    Remove crashes from corpus
+
+    USAGE:
+        sydr-fuzz rm-crashes [OPTIONS] <PATH>
+
+    ARGS:
+        <PATH>    Path to corpus directory.
+
+    OPTIONS:
+        -h, --help                 Print help information
+        -j, --jobs <N>             Number of parallel jobs to run target on inputs [default:
+                                   half of cpu cores]
+        -t, --timeout <SECONDS>    Timeout (in seconds) for target execution [default: 30]
+
+Аргумент **<PATH>** позволяет указать путь к корпусу.
+
+Опция **-j, --jobs <N>** - позволяет задавать число потоков для запуска фаззинг
+цели на входных данных из корпуса.
+По умолчанию данное значение равно половине ядер процессора.
+
+Опция **-t, \--timeout \<SECONDS\>** - позволяет установить тайм-аут на выполнение фаззинг
+цели (по умолчанию 30 секунд).
 
 ## Создание фаззинг целей
 
@@ -804,9 +873,7 @@ ld_preload = false
 
 Для Atheris по умолчанию задаётся переменная среды
 
-`ASAN_OPTIONS="hard_rss_limit_mb=0,abort_on_error=1,detect_leaks=0,malloc_context_size=0,symbolize=0,`
-
-`allocator_may_return_null=1"`
+`ASAN_OPTIONS="hard_rss_limit_mb=0,abort_on_error=1,detect_leaks=0,malloc_context_size=0,allocator_may_return_null=1"`
 
 Значения по умолчанию можно менять путем переопределения их в таблице `[atheris.env]` или в системных
 переменных окружения.
@@ -2817,33 +2884,35 @@ Sydr и дополнительный запуск с включенной обр
 фаззинг более сбалансированным. Фаззинг символьных адресов автоматически
 включается в sydr-fuzz.
 
-## Скрипт, аннотирующий выходные файлы Sydr
+## Утилита, аннотирующая выходные файлы Sydr
 
-Данный скрипт заменяет шестнадцатеричные адреса в логе, трассе переходов или
+Данная утилита заменяет шестнадцатеричные адреса в логе, трассе переходов или
 трассе инструкций на номера строчек и имена функций.
 
 ### Использование
 
-    $ scripts/annotate.py --help
-    usage: annotate.py [-h] [-s] [--security] input output
+    $ ./sydr-annotate --help
+    Annotate log files produced by Sydr using addr2line rust crate
 
-    Annotate Sydr output files with line numbers/files and function names.
+    USAGE:
+        sydr-annotate [OPTIONS] <INPUT> <OUTPUT>
 
-    positional arguments:
-      input       Sydr log or trace file.
-      output      Annotated output file.
+    ARGS:
+        <INPUT>     Log file to annotate
+        <OUTPUT>    Where to save annotated log file
 
-    optional arguments:
-      -h, --help  show this help message and exit
-      -s, --skip-libc  Skip libc for speedup.
-      --security       Annotate just security logs.
+    OPTIONS:
+        -h, --help         Print help information
+            --security     Annotate only security results
+            --skip-libc    Do not annotate locations inside libc
+        -V, --version      Print version information
 
 Пример запуска:
 
     $ ./sydr -t --sym-argv -- tests/synthetic/bin64/argv good!
-    $ scripts/annotate.py out/input_3/trace out/input_3/trace.out
-    $ scripts/annotate.py out/sydr.log out/sydr.log.out
-    $ scripts/annotate.py out/instruction_trace out/instruction_trace.out
+    $ ./sydr-annotate out/input_3/trace out/input_3/trace.out
+    $ ./sydr-annotate out/sydr.log out/sydr.log.out
+    $ ./sydr-annotate out/instruction_trace out/instruction_trace.out
 
 # Статьи и презентации
 
