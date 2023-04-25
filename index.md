@@ -9,10 +9,10 @@ enables [error detection](https://arxiv.org/abs/2111.05770). Sydr uses
 [DynamoRIO](https://dynamorio.org) for concrete execution and
 [Triton](https://triton-library.github.io) for symbolic execution.
 
-**Sydr-fuzz** is a dynamic analysis tool for security development lifecycle. It
+**Sydr-Fuzz** is a dynamic analysis tool for security development lifecycle. It
 combines fuzzing ([libFuzzer](https://www.llvm.org/docs/LibFuzzer.html),
 [AFL++](https://aflplus.plus)) with the power of dynamic symbolic execution
-([Sydr](https://arxiv.org/abs/2011.09269)). Sydr-fuzz implements the following
+([Sydr](https://arxiv.org/abs/2011.09269)). Sydr-Fuzz implements the following
 fuzzing pipeline:
 
 * Hybrid fuzzing with Sydr and libFuzzer/AFL++: `sydr-fuzz run`
@@ -28,7 +28,15 @@ Our mission is discovering new bugs in open source projects via hybrid fuzzing
 ([OSS-Sydr-Fuzz](https://github.com/ispras/oss-sydr-fuzz)). We already found a
 significant number of
 [trophies](https://github.com/ispras/oss-sydr-fuzz/blob/master/TROPHIES.md).
-Moreover, we [compare](fuzzbench) Sydr-fuzz with existing fuzzers.
+Moreover, we [compare](fuzzbench) Sydr-Fuzz with existing fuzzers.
+
+Sydr-Fuzz supports multiple programming languages including C/C++
+([libFuzzer](https://www.llvm.org/docs/LibFuzzer.html)/[AFL++](https://aflplus.plus)),
+Rust
+([cargo-fuzz](https://github.com/rust-fuzz/cargo-fuzz)/[afl.rs](https://github.com/rust-fuzz/afl.rs)),
+Go ([go-fuzz](https://github.com/dvyukov/go-fuzz)), and Python
+([Atheris](https://github.com/google/atheris)). All languages except Python
+support symbolic execution with Sydr.
 
 # Guides
 
