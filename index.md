@@ -4,7 +4,7 @@ title: Sydr
 
 # About
 
-<div style="float: right; margin-left: 1em; width: 50%">
+<div style="float: right; margin-left: 1em; width: 20%">
 <img src="sydr-bold.svg">
 </div>
 
