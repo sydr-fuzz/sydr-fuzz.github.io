@@ -4,6 +4,10 @@ title: Sydr
 
 # About
 
+<div style="float: right; margin-left: 1em">
+<img src="sydr-bold.svg">
+</div>
+
 **Sydr** is a dynamic symbolic execution tool that explores new paths and
 enables [error detection](https://arxiv.org/abs/2111.05770). Sydr uses
 [DynamoRIO](https://dynamorio.org) for concrete execution and
