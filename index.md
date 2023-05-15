@@ -24,7 +24,7 @@ fuzzing pipeline:
 * Error detection (out of bounds, integer overflow, division by zero, etc.) via
   [symbolic security predicates](https://arxiv.org/abs/2111.05770):
   `sydr-fuzz security`
-* Collecting coverage: `sydr-fuzz cov-report`
+* Collecting coverage: `sydr-fuzz cov-html`
 * Crash triaging, deduplication, and clustering with
   [Casr](https://github.com/ispras/casr): `sydr-fuzz casr`
 
