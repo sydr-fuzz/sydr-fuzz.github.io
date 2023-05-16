@@ -17,8 +17,7 @@
 - Минимизация корпуса: `sydr-fuzz cmin` (шаг обязателен для AFL++)
 - Поиск ошибок (выхода за границы буфера, целочисленного переполнения, деления
   на нуль и др.) символьными предикатами безопасности Sydr: `sydr-fuzz security`
-- Сбор покрытия: `sydr-fuzz cov-report`
-- Сбор покрытия для Python-кода: `sydr-fuzz pycov html`
+- Сбор покрытия: `sydr-fuzz cov-html`
 - Дедупликация, кластеризация и оценка критичности аварийных завершений с
   использованием Casr: `sydr-fuzz casr`
 
@@ -37,20 +36,14 @@
 
 # Минимальные системные требования
 
-- Операционная система: Ubuntu 18.04/20.04, Astra 1.7, ALT Workstation 10.0 и
+- Операционная система: Ubuntu 18.04/20.04/22.04, Astra 1.7, ALT Workstation 10.0 и
   аналоги - 64-bit.
 - Процессор (CPU): Intel Core i3 или аналогичный AMD.
 - Оперативная память (RAM): 4 ГБ.
 
-DynamoRIO имеет известную
-[проблему](https://github.com/DynamoRIO/dynamorio/issues/5437) запуска 32-битных
-программ с glibc версии 2.34+. Поэтому Sydr не сможет проанализировать 32-битные
-программы на Ubuntu 22.04. Для решения данной проблемы можно запускать Sydr
-внутри Docker. Анализ 64-битных программ на Ubuntu 22.04 работает без ошибок.
-
 # Рекомендуемые системные требования
 
-- Операционная система: Ubuntu 18.04/20.04 - 64-bit.
+- Операционная система: Ubuntu 18.04/20.04/22.04 - 64-bit.
 - Процессор (CPU): Intel Core i7 (Desktop) или аналогичный AMD.
 - Оперативная память (RAM): 32 ГБ и больше.
 
@@ -58,18 +51,15 @@ DynamoRIO имеет известную
 
 Перед установкой инструмента установите следующие зависимости.
 
-    $ sudo apt install gcc-multilib binutils lsb-release gdb python3 python3-pip \
-                       liblapack-dev gfortran
-    $ sudo -H python3 -m pip install numpy scipy
+    $ sudo apt install gcc-multilib binutils lsb-release gdb lcov
 
 Для корректной работы лицензионного USB ключа требуется установить последнюю
 версию
-[Sentinel HASP/LDK Run-time Environment](https://supportportal.thalesgroup.com/csm?sys_kb_id=29364265db9ea78cfe0aff3dbf96192c&id=kb_article_view&sysparm_rank=6&sysparm_tsqueryId=4cd5f5484722cd10128dca72e36d43e7&sysparm_article=KB0018315)
+[Sentinel HASP/LDK Run-time Environment](https://supportportal.thalesgroup.com/csm?id=kb_search&u_related_product_names=50303b92db852e00d298728dae96199d&query=kbcat_drivers_%26_runtime_packages&_runtime_packages&spa=1&u_all_related_operating_systems=66689e154fe293409a523c728110c74c)
 (перед установкой желательно вынуть USB ключ, и вставить его назад по завершению
 установки):
 
     $ tar xf aksusbd*.tar.gz
-    $ rm aksusbd*.tar.gz
     $ cd aksusbd*
     $ sudo ./dinst
 
@@ -154,16 +144,17 @@ AFL++ активно разрабатывается, поэтому желате
         casr          Triage, deduplicate, cluster crashes and create reports
         cmin          Minimize corpus
         cov-export    Collect and export corpus coverage in JSON or lcov trace file format
+        cov-html      Generate HTML coverage report
         cov-report    Collect corpus coverage and display summary
         cov-show      Collect and show line by line corpus coverage
         help          Print this message or the help of the given subcommand(s)
         pycov         Collect and export corpus coverage in specified format for Python
-                      targets
+                          targets
         rm-crashes    Remove crashes from corpus
         run           Run hybrid fuzzing with Sydr and libFuzzer/AFL++ or Python fuzzing
-                      with Atheris
+                          with Atheris
         security      Check security predicates (out of bounds, integer overflow, division
-                      by zero, etc.) for corpus seeds
+                          by zero, etc.) for corpus seeds
 
 Опция **-c, \--config \<FILE\>** указывает путь к конфигурационному файлу в TOML
 формате для запуска фаззинга (по умолчанию `sydr-fuzz.toml`).
@@ -217,7 +208,25 @@ sydr-fuzz будет завершена.
 при гибридном фаззинге. Имеет эффект только вместе со стратегиями libFuzzer
 `file-info` и `random`.
 
-### Опции сбора покрытия (C/C++/Rust)
+### Опции генерации HTML отчета о покрытии (C/C++/Rust/Python)
+
+    $ sydr-fuzz cov-html -h
+    sydr-fuzz-cov-html
+    Generate HTML coverage report
+
+    USAGE:
+        sydr-fuzz cov-html [OPTIONS]
+
+    OPTIONS:
+        -h, --help        Print help information
+        -j, --jobs <N>    Number of parallel jobs to collect and merge raw LLVM coverage
+                          [default: half of cpu cores]
+
+Опция **-j, \--jobs \<N\>** позволяет задать количество потоков для сбора данных
+LLVM покрытия (не применяется для Python).
+По умолчанию данное значение равно половине ядер процессора.
+
+### Продвинутые опции сбора покрытия (C/C++/Rust)
 
 **sydr-fuzz cov-export** собирает покрытие и экспортирует его в JSON или lcov
 формат
@@ -256,8 +265,14 @@ sydr-fuzz будет завершена.
 
     $ sydr-fuzz cov-report -j 4 -- -use-color=true
 
-### Опции сбора покрытия (Python)
+По умолчанию `llvm-cov` ищется в `PATH`. Однако можно указать свой путь до
+`llvm-cov` в переменной среды `SYDR_LLVM_COV`. Тогда путь до `llvm-profdata`
+составится автоматически на основе пути до `llvm-cov`.
 
+### Продвинутые опции сбора покрытия (Python)
+
+    $ sydr-fuzz pycov -h
+    sydr-fuzz-pycov
     Collect and export corpus coverage in specified format for Python targets
 
     USAGE:
@@ -1195,9 +1210,13 @@ Sydr в режиме проверки предикатов безопаснос�
 файлом sydr-fuzz в директорию `/fuzz` внутри докера (`--privileged` необходим
 для работы Casr, а также позволяет
 докеру видеть локальный лицензионный USB ключ, `--network host` - сетевой ключ,
-также в докер пробрасывается время системы):
+также в докер пробрасывается время системы,
+`-v /var/hasplm:/var/hasplm -v /etc/hasplm:/etc/hasplm` требуется для
+[пробрасывания](https://docs.sentinel.thalesgroup.com/ldk/LDKdocs/SPNL/LDK_SLnP_Guide/Appendixes/Docker_containers.htm)
+драйвера Sentinel в докер):
 
     $ sudo docker run --privileged --network host -v /etc/localtime:/etc/localtime:ro \
+        -v /var/hasplm:/var/hasplm -v /etc/hasplm:/etc/hasplm \
         --rm -it -v $PWD:/fuzz sydr-fuzz-target /bin/bash
 
 Зайдите в директорию `/fuzz`:
@@ -1282,20 +1301,28 @@ target = "/instrumented_target @@"
 `-fprofile-instr-generate -fcoverage-mapping`. Если `@@` отсутствует в строке запуска, то
 входные данные принимаются из стандартного потока ввода.
 
+Для генерации HTML отчета о покрытии можно воспользоваться следующей командой:
+
+    $ sydr-fuzz -c name.toml cov-html
+
 Для запуска сбора покрытия на корпусе проекта и вывода краткого отчёта с цветной разметкой
 можно выполнить следующую команду:
 
     $ sydr-fuzz -c name.toml cov-report -- -use-color=true
 
-Для получения отчёта о покрытии в формате html можно воспользоваться следующей
-командой:
+Для получения отчёта о покрытии в одном файле html (не рекомендуется для больших
+проектов) можно воспользоваться следующей командой:
 
     $ sydr-fuzz -c name.toml cov-show -- -format=html > index.html
 
-Более того, можно получить покрытие в формате LCOV html:
+Более того, можно получить покрытие в формате LCOV с его дальнейшей конвертацией
+в html, что позволяет более гибко задавать опции:
 
     $ sydr-fuzz -c name.toml cov-export -- -format=lcov > name.lcov
     $ genhtml -o name-cov-html name.lcov
+
+Если `genhtml` выдает ошибку `ERROR: cannot read /path/to/file`, то можно
+запустить его с опцией `--ignore-errors source`.
 
 ## Сбор покрытия (Python)
 
@@ -1303,9 +1330,7 @@ Sydr-fuzz позволяет собирать покрытие на корпус
 выполнять его обработку и получать отчет в формате html. Для этого достаточно
 использовать команду
 
-    $ sydr-fuzz -c name.toml pycov html
-
-Более подробное описание находится в разделе "Опции сборa покрытия (Python)".
+    $ sydr-fuzz -c name.toml cov-html
 
 ## Чтение символьных данных в Sydr из стандартного потока ввода (C/C++/Rust/Go)
 
@@ -2891,7 +2916,7 @@ Sydr и дополнительный запуск с включенной обр
 
 ### Использование
 
-    $ ./sydr-annotate --help
+    $ sydr-annotate -h
     Annotate log files produced by Sydr using addr2line rust crate
 
     USAGE:
@@ -2902,10 +2927,12 @@ Sydr и дополнительный запуск с включенной обр
         <OUTPUT>    Where to save annotated log file
 
     OPTIONS:
-        -h, --help         Print help information
-            --security     Annotate only security results
-            --skip-libc    Do not annotate locations inside libc
-        -V, --version      Print version information
+        -h, --help                 Print help information
+        -l, --log-level <LEVEL>    Logging level [default: info] [possible values: minimal,
+                                   info, debug, trace]
+            --security             Annotate only security results
+            --skip-libc            Do not annotate locations inside libc
+        -V, --version              Print version information
 
 Пример запуска:
 
