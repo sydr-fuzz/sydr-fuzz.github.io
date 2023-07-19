@@ -50,6 +50,9 @@ support symbolic execution with Sydr.
 * Fuzzing goblin (Rust) project with Sydr and AFLplusplus \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-goblin-%28Rust%3Acrab%3A%21%29-project-with-Sydr-and-AFLplusplus)\] \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-goblin-%28Rust%3Acrab%3A%21%29-project-with-Sydr-and-AFLplusplus-%28rus%29)\]
 * Fuzzing ruamel-yaml (Python) project with  sydr-fuzz (Atheris backend) \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-ruamel-yaml-%28Python%29-project-with--sydr-fuzz-%28Atheris-backend%29)\] \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-ruamel-yaml-%28Python%29-project-with--sydr-fuzz-%28Atheris-backend%29-%28rus%29)\]
 * Fuzzing golang/image (Go) project with sydr-fuzz (go-fuzz backend) \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-golang-image-%28Go%29-project-with--sydr-fuzz-%28go-fuzz-backend%29)\] \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-golang-image-%28Go%29-project-with--sydr-fuzz-%28go-fuzz-backend%29-%28rus%29)\]
+* Fuzzing json‐sanitizer (Java) project with sydr‐fuzz (Jazzer backend)
+  \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-json%E2%80%90sanitizer-%28Java%29-project-with-sydr%E2%80%90fuzz-%28Jazzer-backend%29)\]
+  \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-json%E2%80%90sanitizer-%28Java%29-project-with-sydr%E2%80%90fuzz-%28Jazzer-backend%29-%28rus%29)\]
 
 # Open Source Projects
 
