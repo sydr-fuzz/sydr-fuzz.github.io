@@ -21,12 +21,15 @@ fuzzing pipeline:
 
 * Hybrid fuzzing with Sydr and libFuzzer/AFL++: `sydr-fuzz run`
 * Corpus minimization: `sydr-fuzz cmin`
-* Error detection (out of bounds, integer overflow, division by zero, etc.) via
+* Error detection (out of bounds, integer overflow, numeric truncation, division
+  by zero, etc.) via
   [symbolic security predicates](https://arxiv.org/abs/2111.05770):
   `sydr-fuzz security`
 * Collecting coverage: `sydr-fuzz cov-html`
-* Crash triaging, deduplication, and clustering with
-  [Casr](https://github.com/ispras/casr): `sydr-fuzz casr`
+* Triaging, deduplication, and clustering of crashes and Undefined Behavior
+  Sanitizer errors with
+  [Casr](https://github.com/ispras/casr), and later upload of new and unique
+  reports to [DefectDojo](https://github.com/DefectDojo/django-DefectDojo): `sydr-fuzz casr --ubsan --url <URL>`
 
 Our mission is discovering new bugs in open source projects via hybrid fuzzing
 ([OSS-Sydr-Fuzz](https://github.com/ispras/oss-sydr-fuzz)). We already found a
@@ -38,8 +41,10 @@ Sydr-Fuzz supports multiple programming languages including C/C++
 ([libFuzzer](https://www.llvm.org/docs/LibFuzzer.html)/[AFL++](https://aflplus.plus)),
 Rust
 ([cargo-fuzz](https://github.com/rust-fuzz/cargo-fuzz)/[afl.rs](https://github.com/rust-fuzz/afl.rs)),
-Go ([go-fuzz](https://github.com/dvyukov/go-fuzz)), and Python
-([Atheris](https://github.com/google/atheris)). All languages except Python
+Go ([go-fuzz](https://github.com/dvyukov/go-fuzz)), Python
+([Atheris](https://github.com/google/atheris)), and Java
+([Jazzer](https://github.com/CodeIntelligenceTesting/jazzer)). All languages
+except Python and Java
 support symbolic execution with Sydr.
 
 # Guides
