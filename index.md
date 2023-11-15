@@ -134,3 +134,6 @@ support symbolic execution with Sydr.
   \[[russian&nbsp;thesis](https://vishnya.xyz/vishnyakov-phd-thesis2022.pdf)\]
   \[[russian&nbsp;synopsis](https://vishnya.xyz/vishnyakov-phd-synopsis2022.pdf)\]
   \[[russian&nbsp;slides](https://vishnya.xyz/vishnyakov-phd-thesis2022-presentation.pdf)\]
+* Fedotov A., Vishnyakov A. CASR: Your Life Vest in a Sea of Crashes. OFFZONE 2023.
+  \[[slides](/papers/fedotov-casr-offzone2023.pdf)\]
+  \[[russian&nbsp;video](https://www.youtube.com/watch?v=EgEeICZQD9M)\]
