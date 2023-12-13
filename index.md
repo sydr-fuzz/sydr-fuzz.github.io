@@ -137,3 +137,8 @@ support symbolic execution with Sydr.
 * Fedotov A., Vishnyakov A. CASR: Your Life Vest in a Sea of Crashes. OFFZONE 2023.
   \[[slides](/papers/fedotov-casr-offzone2023.pdf)\]
   \[[russian&nbsp;video](https://www.youtube.com/watch?v=EgEeICZQD9M)\]
+* Mezhuev T., Kobrin I., Vishnyakov A., Kuts D. Numeric Truncation Security Predicate.
+  2023 Ivannikov ISPRAS Open Conference.
+  \[[paper](https://arxiv.org/abs/2312.06425)\]
+  \[[slides](https://vishnya.xyz/mirror/mezhuev-ispopen2023.pdf)\]
+  \[[russian&nbsp;video](https://www.youtube.com/watch?v=oMpSgMFFiXc&t=18608s)\]
