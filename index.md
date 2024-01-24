@@ -136,7 +136,10 @@ support symbolic execution with Sydr.
   \[[russian&nbsp;slides](https://vishnya.xyz/vishnyakov-phd-thesis2022-presentation.pdf)\]
 * Fedotov A., Vishnyakov A. CASR: Your Life Vest in a Sea of Crashes. OFFZONE 2023.
   \[[slides](/papers/fedotov-casr-offzone2023.pdf)\]
-  \[[russian&nbsp;video](https://www.youtube.com/watch?v=EgEeICZQD9M)\]
+  \[[russian&nbsp;video](https://youtu.be/EgEeICZQD9M?si=hiFEwPmDqnh0cEq6)\]
+* Padaryan V., Stepanov V., Vishnyakov A. Fuzzing for SDL: Select, Cover, Reveal. OFFZONE 2023.
+  \[[slides](/papers/vishnyakov-sydr-offzone2023.pdf)\]
+  \[[russian&nbsp;video](https://youtu.be/ASZMRp8AoTQ?si=HW0q_TxtbMWCkuoH&t=1067)\]
 * Mezhuev T., Kobrin I., Vishnyakov A., Kuts D. Numeric Truncation Security Predicate.
   2023 Ivannikov ISPRAS Open Conference.
   \[[paper](https://arxiv.org/abs/2312.06425)\]
