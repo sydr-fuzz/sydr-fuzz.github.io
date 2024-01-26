@@ -19,8 +19,8 @@ combines fuzzing ([libFuzzer](https://www.llvm.org/docs/LibFuzzer.html),
 ([Sydr](https://arxiv.org/abs/2011.09269)). Sydr-Fuzz implements the following
 fuzzing pipeline:
 
-* Hybrid fuzzing with Sydr and libFuzzer/AFL++; coverage-guided Python (Atheris)
-  and Java (Jazzer) fuzzing: `sydr-fuzz run`
+* Hybrid fuzzing with Sydr and libFuzzer/AFL++; coverage-guided Python (Atheris),
+  Java (Jazzer) and JavaScript (Jazzer.js) fuzzing: `sydr-fuzz run`
 * Corpus minimization: `sydr-fuzz cmin`
 * Error detection (out of bounds, integer overflow, numeric truncation, division
   by zero, etc.) via
