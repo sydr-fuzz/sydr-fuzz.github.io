@@ -59,6 +59,8 @@ support symbolic execution with Sydr.
 * Fuzzing json‐sanitizer (Java) project with sydr‐fuzz (Jazzer backend)
   \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-json%E2%80%90sanitizer-%28Java%29-project-with-sydr%E2%80%90fuzz-%28Jazzer-backend%29)\]
   \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-json%E2%80%90sanitizer-%28Java%29-project-with-sydr%E2%80%90fuzz-%28Jazzer-backend%29-%28rus%29)\]
+* Fuzzing fast-xml-parser (JavaScript) project with sydr-fuzz (Jazzer.js backend)
+  \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-fast%E2%80%90xml%E2%80%90parser-%28JavaScript%29-project-with-sydr%E2%80%90fuzz-%28Jazzer.js-backend%29-%28rus%29)\]
 
 # Open Source Projects
 
