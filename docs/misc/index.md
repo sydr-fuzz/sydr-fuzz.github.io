@@ -321,6 +321,77 @@ module.exports.fuzz = function (fuzzerInputData) {
 };
 ```
 
+### Обертка Sharpfuzz
+
+Для сборки обертки необходимо в новой созданной директории создать консольное
+.NET приложение и добавить в него модуль `Sharpfuzz`:
+
+    $ mkdir build_fuzz && cd build_fuzz
+    $ dotnet new console
+    $ dotnet add package SharpFuzz
+
+Затем в файле `Program.cs` можно написать обертку под нужный фазз-таргет.
+Для подготовки `Sharpfuzz` обертки можно воспользоваться его
+[документацией](https://github.com/Metalnem/sharpfuzz/blob/master/README.md).
+Требуется из функции Main вызвать функцию `Fuzzer.OutOfProcess.Run()`, в качестве
+параметра которой нужно передать функцию, являющуюся целью фаззинга. Также
+необходимо в начале обертки подключить модуль `Sharpfuzz`.
+
+```c#
+using System;
+using System.IO;
+using SharpFuzz;
+
+namespace Jil.Fuzz
+{
+  public class Program
+  {
+    public static void Main(string[] args)
+    {
+      Fuzzer.OutOfProcess.Run(stream =>
+      {
+        try
+        {
+          using (var reader = new StreamReader(stream))
+          {
+            JSON.DeserializeDynamic(reader);
+          }
+        }
+        catch (DeserializationException) { }
+      });
+    }
+  }
+}
+```
+
+В файле `build_fuzz.csproj` нужно связать обертку с модулем проекта. Для этого нужно либо
+собрать сам проект (в директории проекта с помощью `dotnet build` или `dotnet publish`),
+найти скомпилированный модуль `target_name.dll` (обычно лежит внутри директории `bin/`)
+и указать путь до него в `build_fuzz.csproj` файле, либо можно указать путь до .csproj
+файла проекта, тогда при сборке фазз-таргета проект будет пересобираться автоматически:
+
+```xml
+<ItemGroup>
+    <Reference Include="target_name">
+      <HintPath>/path/to/bin/target_name.dll</HintPath>
+    </Reference>
+    <PackageReference Include="SharpFuzz" Version="2.1.1" />
+</ItemGroup>
+```
+либо
+```xml
+<ItemGroup>
+    <ProjectReference Include="/path/to/csproj/target_name.csproj" />
+    <PackageReference Include="SharpFuzz" Version="2.1.1" />
+</ItemGroup>
+```
+
+После этого нужно собрать фазз-таргет и проинструментировать его для фаззинга
+с помощью инструмента [Sharpfuzz](https://github.com/Metalnem/sharpfuzz):
+
+    $ dotnet publish build_fuzz.csproj -c release -o bin
+    $ sharpfuzz bin/target_name.dll
+
 ## Подготовка докера для гибридного фаззинга
 
 Докер файл отвечает за установку зависимостей для сборки цели, сборку целей под

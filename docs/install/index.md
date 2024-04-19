@@ -102,3 +102,14 @@ AFL++ активно разрабатывается, поэтому желате
 `sydr/ubuntu20.04-sydr-fuzz`. При запуске на другой системе потребуется скачать
 и установить Jazzer.js (можно из [репозитория](https://github.com/CodeIntelligenceTesting/jazzer.js)).
 
+## Зависимости Sharpfuzz
+
+Фаззер Sharpfuzz и все необходимые утилиты уже установлены в нашем докере
+`sydr/ubuntu20.04-sydr-fuzz`. При запуске на другой системе потребуется скачать
+Sharpfuzz (можно из [репозитория](https://github.com/Metalnem/sharpfuzz)),
+AFL++ (можно из [репозитория](https://github.com/AFLplusplus/AFLplusplus)),
+для сборки и запуска C# програм понадобится скачать .NET SDK (можно с [сайта](https://learn.microsoft.com/en-us/dotnet/core/install/linux)).
+Для сбора покрытия в форматах html, clover, coveralls, xml, opencover, cobertura, text
+понадобится инструмент `minicover` (скачать можно по гайдам из [репозитория](https://github.com/lucaslorentz/minicover)).
+Для сбора покрытия в форматах html (с помощью genhtml) или lcov
+понадобится инструмент `AltCover` (скачать можно по гайдам из [репозитория](https://github.com/SteveGilham/altcover)).

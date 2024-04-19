@@ -221,7 +221,6 @@ Sydr - инструмент динамической символьной инт
                                             injection - OS command injection;
                                             format - controlled format string
                                             injection.
-.
 
     Logging:
       -l [ --log-level ] LEVEL (=info)      Specify logging level

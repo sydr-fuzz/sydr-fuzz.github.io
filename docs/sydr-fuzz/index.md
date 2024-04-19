@@ -1,5 +1,5 @@
 # Гибридный фаззер Sydr-fuzz
-
+ 
 * TOC
 {:toc}
 
@@ -10,14 +10,16 @@
 запускать Sydr вместе с [libFuzzer](https://www.llvm.org/docs/LibFuzzer.html) и
 [AFL++](https://aflplus.plus/), а также поддерживает фаззинг Python/CPython с
 помощью [Atheris](https://github.com/google/atheris), фаззинг Java с
-помощью [Jazzer](https://github.com/CodeIntelligenceTesting/jazzer) и фаззинг JavaScript c
-помощью [Jazzer.js](https://github.com/CodeIntelligenceTesting/jazzer.js).
+помощью [Jazzer](https://github.com/CodeIntelligenceTesting/jazzer), фаззинг JavaScript c
+помощью [Jazzer.js](https://github.com/CodeIntelligenceTesting/jazzer.js) и фаззинг C# с
+помощью [Sharpfuzz](https://github.com/Metalnem/sharpfuzz) для
+инструментации кода и [AFL++](https://aflplus.plus/) для фаззинга.
 Примеры уже настроенных фаззинг целей для sydr-fuzz можно найти в репозитории
 [OSS-Sydr-Fuzz](https://github.com/ispras/oss-sydr-fuzz). По сути sydr-fuzz
 реализует пайплайн фаззинга:
 
 - Гибридный фаззинг с помощью Sydr и одного из фаззеров (libFuzzer, AFL++),
-  фаззинг Python (Atheris), Java (Jazzer) и JavaScript (Jazzer.js):
+  фаззинг Python (Atheris), Java (Jazzer), JavaScript (Jazzer.js) и C# (Sharpfuzz):
   `sydr-fuzz run`
 - Минимизация корпуса: `sydr-fuzz cmin` (шаг обязателен для AFL++)
 - Поиск ошибок (выхода за границы буфера, целочисленного переполнения, деления
@@ -71,6 +73,8 @@
                           targets
         pycov         Collect and export corpus coverage in specified format for Python
                           targets
+        sharpcov      Collect and export corpus coverage in specified format for C#
+                          targets
         rm-crashes    Remove crashes from corpus
         run           Run hybrid fuzzing with Sydr and libFuzzer/AFL++, Python fuzzing
                           with Atheris, Java fuzzing with Jazzer, or JavaScript fuzzing with
@@ -92,6 +96,45 @@
 указывать эту опцию, то проект создастся в текущей директории с именем
 `<CONFIG>-out`.
 
+### Опции для создания шаблона конфигурационного TOML файла
+
+    $ sydr-fuzz-init
+    Create basic TOML config file template
+
+    USAGE:
+    sydr-fuzz init [OPTIONS]
+
+    OPTIONS:
+            --afl <RUN_TARGET_LINE>...          Add AFL++ table to TOML config template
+            --atheris <RUN_TARGET_LINE>...      Add Atheris table to TOML config template
+        -c, --corpus <corpus>                   Path to corpus directory
+            --cov <RUN_TARGET_LINE>...          Add coverage table to TOML config template
+        -h, --help                              Print help information
+            --jazzer <TARGET_CLASS>             Add Jazzer table to TOML config template
+            --jazzer-js <RUN_TARGET_LINE>...    Add Jazzer.js table to TOML config template
+            --libfuzzer <RUN_TARGET_LINE>...    Add libFuzzer table to TOML config template
+            --sharpfuzz <RUN_TARGET_LINE>...    Add Sharpfuzz table to TOML config template
+            --sydr <RUN_TARGET_LINE>...         Add Sydr table to TOML config template
+
+Опция **--afl** добавляет таблицу AFL++.
+
+Опция **--atheris** добавляет таблицу Atheris (несовместима с другими таблицами).
+
+Опция **-c, --corpus** указывает путь до директории с корпусом.
+
+Опция **--cov**  добавляет таблицу для сбора покрытия (для компилируемых языков или C#)
+Может быть указана только вместе с одной из таблиц AFL++, libFuzzer, Sydr, Sharpfuzz.
+
+Опция **--jazzer** добавляет таблицу Jazzer (несовместима с другими таблицами).
+
+Опция **--jazzer-js** добавляет таблицу Jazzer.js (несовместима с другими таблицами).
+
+Опция **--libfuzzer** добавляет таблицу libFuzzer.
+
+Опция **--sydr** добавляет таблицу Sydr.
+
+Опция **--sharpfuzz** добавляет таблицу Sharpfuzz (несовместима с другими таблицами, кроме [cov]).
+
 ### Опции запуска фаззинга
 
     $ sydr-fuzz run -h
@@ -99,18 +142,17 @@
     Run hybrid fuzzing with Sydr and libFuzzer/AFL++, Python fuzzing with Atheris, Java
     fuzzing with Jazzer, or JavaScript fuzzing with Jazzer.js
 
-    USAGE:
-        sydr-fuzz run [OPTIONS]
+    Usage: sydr-fuzz run [OPTIONS]
 
-    OPTIONS:
-        -f, --force-remove           Remove output project directory if it exists
-        -h, --help                   Print help information
-            --runs <N>               Stop sydr-fuzz after N Sydr runs
-        -s, --strategy <STRATEGY>    Strategy for scheduling Sydr input seeds [default:
-                                     coverage] [possible values: coverage, random, file-info]
-            --use-sydr-inputs        Use files generated by Sydr as new inputs for Sydr
-                                     (relevant only for libFuzzer random and file-info
-                                     strategies)
+    Options:
+          --use-sydr-inputs      Use files generated by Sydr as new inputs for Sydr (relevant
+                                 only for libFuzzer random and file-info strategies)
+          --attach               Attach Sydr to existing fuzzing process
+      -f, --force-remove         Remove output project directory if it exists
+      -s, --strategy <STRATEGY>  Strategy for scheduling Sydr input seeds [default: coverage]
+                                 [possible values: coverage, random, file-info]
+          --runs <N>             Stop sydr-fuzz after N Sydr runs
+      -h, --help                 Print help
 
 Опция **-f, \--force-remove** перезаписывает всю выходную директорию с проектом.
 
@@ -131,7 +173,20 @@ sydr-fuzz будет завершена.
 при гибридном фаззинге. Имеет эффект только вместе со стратегиями libFuzzer
 `file-info` и `random`.
 
-### Опции генерации HTML отчета о покрытии (C/C++/Rust/Python/Go/Java/JavaScript)
+Опция **\--attach** позволяет запускать Sydr в режиме присоединения к внешнему
+фаззеру. Для этого в toml-конфиге должны быть заданы соответствующие
+директории: директория фаззера (`fuzzer_dir`) и выходная директория для Sydr
+(`output_dir`). В случае фаззера AFL++ ожидается, что в `fuzzer_dir` существует
+файл `fuzzer_setup` и директория `queue`, откуда будут выбираться входные данные
+для Sydr. В качестве стратегии выбора входных файлов используется `coverage`.
+Для остальных фаззеров, совместимых с Sydr, входные данные непосредственно
+извлекаются из `fuzzer_dir`, стратегия выбора - `file-info`.
+Сгенерированные инструментом Sydr файлы будут подкладываться в директорию `output_dir`.
+При работе с фаззерами, отличными от AFL++, через соответствующий параметр в
+конфигурационном файле можно указать, необходимо ли производить минимизацию
+сгенерированных инструментом Sydr входных файлов.
+
+### Опции генерации HTML отчета о покрытии (C/C++/Rust/Python/Go/Java/JavaScript/C#)
 
     $ sydr-fuzz cov-html -h
     sydr-fuzz-cov-html
@@ -269,6 +324,34 @@ LLVM покрытия (не применяется для Python).
 Дополнительные аргументы **<ARGS>**, которые можно перечислить после `--`,
 представляют собой соответствующие опции и аргументы
 [Jazzer.js](https://github.com/CodeIntelligenceTesting/jazzer.js/blob/main/docs/fuzz-targets.md#coverage-report-generation).
+
+### Продвинутые опции сбора покрытия (C#)
+
+    $ sydr-fuzz sharpcov -h
+    sydr-fuzz-sharpcov
+    Collect and export corpus coverage in specified format for C# targets
+
+    USAGE:
+        sydr-fuzz sharpcov <FORMAT> [-- <ARGS>...]
+
+    ARGS:
+        <FORMAT>     Coverage format (html, lcov, clover, coveralls, xml, opencover, cobertura, text)
+                    [possible values: html, lcov, clover, coveralls, xml, opencover, cobertura, text]
+        <ARGS>...    Extra minicover/altcover instrument options after --
+
+    OPTIONS:
+        -h, --help    Print help information
+
+Дополнительные аргументы **<ARGS>**, которые можно перечислить после `--`,
+представляют собой соответствующие опции и аргументы
+[AltCover](https://stevegilham.com/altcover/Usage) (для форматов lcov и html) или
+[minicover instrument](https://github.com/lucaslorentz/minicover?tab=readme-ov-file#instrument)
+(для форматов html, clover, coveralls, xml, opencover, cobertura, text).
+Для `AltCover` можно добавлять опции `--fileFilter`, `--pathFilter`, `--assemblyFilter`, `--assemblyExcludeFilter`,
+`--typeFilter`, `--methodFilter`, `--attributeFilter`, `--attributetoplevel`, `--typetoplevel`, `--methodtoplevel`,
+`--localSource`, `--callContext`, `--methodpoint`, `--single`, `--linecover`, `--branchcover`.
+Как дополнительные аргументы `minicover instrument` можно добавлять опции `--sources`, `--assemblies`, `--tests`,
+`--exclude-sources`, `exclude-assemblies` и `exclude-tests`.
 
 ### Сбор покрытия (Go)
 
@@ -647,6 +730,25 @@ Sydr в режиме проверки предикатов безопаснос�
 
     $ ls name-out/aflplusplus/afl_main-worker/queue | grep "sync:sydr-worker"
 
+Поддерживается возможность одновременного запуска libFuzzer, AFL++ и Sydr (опционален).
+Для этого в конфигурационном файле должны пристутствовать таблицы для всех
+вышеперечисленных инструментов. Никаких дополнительных опций/настроек задавать
+не нужно. При указании всех трех таблиц будет произведен запуск фаззеров и
+символьного исполнителя. AFL++ синхонизирован с инструментом Sydr по обычной стратегии,
+однако рабочая директория libFuzzer'a будет задана для AFL++ как директория
+внешненго фаззера (через опцию `-F`). Sydr попеременно выбирает входные данные от фаззеров
+и подкладывает сгенерированные в рабочую директорию libFuzzer'а,
+из которой впоследствии только уникальные (с точки зрения `afl-showmap`)
+попадают в выходную директорию AFL++ в корпус Sydr (`aflplusplus/sydr-worker/queue`).
+
+По завершении фаззинга результаты работы будут сохранены в `name-out/crashes`.
+Рекомендуется воспользоваться комнандой `cmin` (см. следующий раздел)
+для агрегации фаззинг-корпуса в `name-out/corpus`. В противном случае
+он будет содержаться либо в `name-out/aflplusplus/afl_main-worker/queue`
+(после финальной синхронизации AFL\_FINAL\_SYNC в afl++ v4.09c и выше),
+либо разбит по директориям AFL++ (`name-out/aflplusplus/*-worker/queue`) и
+libFuzzer (`name-out/libfuzzer/queue`).
+
 ## Минимизация корпуса
 
 Чтобы минимизировать корпус, надо запустить команду `cmin`:
@@ -721,6 +823,83 @@ Sydr-fuzz позволяет собирать покрытие на корпус
 
     $ export CASR_SOURCE_DIRS=/dir/with/sources/1:/dir/with/sources/2
     $ sydr-fuzz cov-html
+
+## Сбор покрытия (C#)
+
+Sydr-fuzz позволяет собирать покрытие на корпусе для целевого C#-кода.
+Для этого нужно добавить секцию `[cov]` в конфигурационный файл.
+В зависимости от требуемого формата покрытия нужно указать разные варианты `[cov]`:
+
+Для форматов html, clover, coveralls, xml, opencover, cobertura, text используется
+инструмент [minicover](https://github.com/lucaslorentz/minicover):
+```toml
+[cov]
+target = "/fuzz/Program.cs"
+source = "/source"
+build_dir = "/fuzz"
+tool_path = "/usr/bin/minicover"
+use_minicover = true
+```
+
+Для формата lcov и html используется инструмент [AltCover](https://github.com/SteveGilham/altcover):
+```toml
+[cov]
+build_dir = "/fuzz"
+tool_path = "/usr/bin/altcover"
+use_minicover = false
+```
+
+Чтобы собрать покрытие через `sydr-fuzz`, необходимо создать сборку в отдельной директории:
+
+    $ mkdir build_cov && cd build_cov
+    $ dotnet new console
+
+Затем аналогично сборке для фаззинга можно в файле `Program.cs` написать обертку и
+в `build_cov.csproj` файл добавить путь до модуля собранного проекта, либо можно
+указать путь до .csproj файла проекта:
+
+```xml
+<ItemGroup>
+    <Reference Include="target_name">
+      <HintPath>/path/to/bin/target_name.dll</HintPath>
+    </Reference>
+</ItemGroup>
+```
+либо
+```xml
+<ItemGroup>
+    <ProjectReference Include="/path/to/csproj/target_name.csproj" />
+</ItemGroup>
+```
+
+Перед сбором покрытия сам проект собирать не нужно (в `sydr-fuzz` проект собирается
+автоматически через `dotnet build`), но если требуется собрать его с определенными настройками,
+то в директории `build_cov` после сборки проекта должна быть директория `bin/Debug` с файлами .dll,
+а сам проект должен быть собран в конфигурации `Debug` (так как сбор покрытия осуществляется через
+`dotnet run`, где по умолчанию указана конфигурация `Debug`). Также в директории `build_cov`
+не должно быть артефактов и инструментированных файлов после работы `AltCover` и `minicover`.
+
+Для сбора покрытия в форматах `html` или `lcov` нужно запустить сбор покрытия
+через `sydr-fuzz`, указав в конфигурационном файле путь для модулей .dll `bin_dir`,
+путь до директории `build_dir`, откуда собиралось приложение, путь до инструмента AltCover в
+`tool_path` (если этого инструмента нет в $PATH):
+
+    $ sydr-fuzz sharpcov <название_формата>
+    или
+    $ sydr-fuzz cov-html (для формата html)
+
+Для сбора покрытия в форматах `html`, `clover`, `coveralls`, `xml`, `opencover`, `cobertura`,
+`text` нужно запустить сбор покрытия через `sydr-fuzz`, указав в конфигурационном файле
+путь для обертки `target`, путь для исходного кода `source`, путь до директории `build_dir`, откуда
+собиралось приложение, путь до инструмента minicover в `tool_path` (если этого инструмента нет в $PATH):
+
+    $ sydr-fuzz sharpcov <название_формата>
+    или
+    $ sydr-fuzz cov-html (для формата html)
+
+Покрытие в формате HTML может быть собрано как с помощью `AltCover`, так и с помощью `minicover`.
+Инструмент `AltCover` используется по умолчанию, так как поддерживает возможность сбора покрытия
+в параллельном режиме.
 
 ## Сбор покрытия (Go)
 
@@ -858,7 +1037,15 @@ target = "./target_sydr @@"
 
 [libfuzzer]
 path = "./target_fuzzer"
+
+[sharpfuzz]
+target = "/target_sharpfuzz.dll"
+casr_bin = "/casr_target_sharpfuzz.dll"
 ```
+
+В случае анализа аварийных завершений C#-кода необходимо дополнительно добавить запись
+`casr_bin = "/path/to/bin.dll"` в `[sharpfuzz]`, причем указанный .dll модуль не должен
+быть проинструментирован инструментом Sharpfuzz.
 
 Для запуска анализа Casr следует выполнить:
 

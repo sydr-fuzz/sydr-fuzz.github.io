@@ -50,17 +50,19 @@ support symbolic execution with Sydr.
 
 # Guides
 
-* Fuzzing xlnt project with sydr-fuzz for fun and profit (libFuzzer)
+* **C/C++**: Fuzzing xlnt project with sydr-fuzz for fun and profit (libFuzzer)
   \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-xlnt-project-with-sydr-fuzz-for-fun-and-profit)\] \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-xlnt-project-with-sydr-fuzz-for-fun-and-profit-%28rus%29)\]
-* Fuzzzing FreeImage project with Sydr and AFLplusplus \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzzing-FreeImage-project-with-Sydr-and-AFLplusplus)\] \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzzing-FreeImage-project-with-Sydr-and-AFLplusplus-%28rus%29)\]
-* Fuzzing goblin (Rust) project with Sydr and AFLplusplus \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-goblin-%28Rust%3Acrab%3A%21%29-project-with-Sydr-and-AFLplusplus)\] \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-goblin-%28Rust%3Acrab%3A%21%29-project-with-Sydr-and-AFLplusplus-%28rus%29)\]
-* Fuzzing ruamel-yaml (Python) project with  sydr-fuzz (Atheris backend) \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-ruamel-yaml-%28Python%29-project-with--sydr-fuzz-%28Atheris-backend%29)\] \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-ruamel-yaml-%28Python%29-project-with--sydr-fuzz-%28Atheris-backend%29-%28rus%29)\]
-* Fuzzing golang/image (Go) project with sydr-fuzz (go-fuzz backend) \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-golang-image-%28Go%29-project-with--sydr-fuzz-%28go-fuzz-backend%29)\] \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-golang-image-%28Go%29-project-with--sydr-fuzz-%28go-fuzz-backend%29-%28rus%29)\]
-* Fuzzing json‐sanitizer (Java) project with sydr‐fuzz (Jazzer backend)
+* **C/C++**: Fuzzzing FreeImage project with Sydr and AFLplusplus \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzzing-FreeImage-project-with-Sydr-and-AFLplusplus)\] \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzzing-FreeImage-project-with-Sydr-and-AFLplusplus-%28rus%29)\]
+* **Rust**: Fuzzing goblin (Rust) project with Sydr and AFLplusplus \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-goblin-%28Rust%3Acrab%3A%21%29-project-with-Sydr-and-AFLplusplus)\] \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-goblin-%28Rust%3Acrab%3A%21%29-project-with-Sydr-and-AFLplusplus-%28rus%29)\]
+* **Python**: Fuzzing ruamel-yaml (Python) project with  sydr-fuzz (Atheris backend) \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-ruamel-yaml-%28Python%29-project-with--sydr-fuzz-%28Atheris-backend%29)\] \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-ruamel-yaml-%28Python%29-project-with--sydr-fuzz-%28Atheris-backend%29-%28rus%29)\]
+* **Go**: Fuzzing golang/image (Go) project with sydr-fuzz (go-fuzz backend) \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-golang-image-%28Go%29-project-with--sydr-fuzz-%28go-fuzz-backend%29)\] \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-golang-image-%28Go%29-project-with--sydr-fuzz-%28go-fuzz-backend%29-%28rus%29)\]
+* **Java**: Fuzzing json‐sanitizer (Java) project with sydr‐fuzz (Jazzer backend)
   \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-json%E2%80%90sanitizer-%28Java%29-project-with-sydr%E2%80%90fuzz-%28Jazzer-backend%29)\]
   \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-json%E2%80%90sanitizer-%28Java%29-project-with-sydr%E2%80%90fuzz-%28Jazzer-backend%29-%28rus%29)\]
-* Fuzzing fast-xml-parser (JavaScript) project with sydr-fuzz (Jazzer.js backend)
+* **JavaScript**: Fuzzing fast-xml-parser (JavaScript) project with sydr-fuzz (Jazzer.js backend) \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-fast%E2%80%90xml%E2%80%90parser-%28JavaScript%29-project-with-sydr%E2%80%90fuzz-%28Jazzer.js-backend%29)\]
   \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-fast%E2%80%90xml%E2%80%90parser-%28JavaScript%29-project-with-sydr%E2%80%90fuzz-%28Jazzer.js-backend%29-%28rus%29)\]
+* **C#**: Fuzzing YamlDotNet project with sydr‐fuzz (AFL and Sharpfuzz backend) \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-YamlDotNet-%28C%23%29-project-with-sydr%E2%80%90fuzz-%28AFL-and-Sharpfuzz-backend%29-%28eng%29)\]
+  \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-YamlDotNet-%28C%23%29-project-with-sydr%E2%80%90fuzz-%28AFL-and-Sharpfuzz-backend%29-%28rus%29)\]
 
 # Open Source Projects
 
