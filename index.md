@@ -152,5 +152,5 @@ support symbolic execution with Sydr.
 * Yegorov I., Savidov G.: Crash Report Accumulation During Continuous Fuzzing with CASR.
   Ivannikov Memorial Workshop 2024, IEEE, 2024.
   \[[paper](https://arxiv.org/abs/2405.18174)\]
-  \[[slides](/paper/crash-accumulation.pdf)\]
+  \[[slides](/papers/crash-accumulation.pdf)\]
   \[[russian&nbsp;video](https://www.youtube.com/live/xI1LQS3C7eQ?si=dHNdm4-nZFc2QdQf&t=27620)\]
