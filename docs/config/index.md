@@ -1,4 +1,4 @@
-# Конфигурационный файл Sydf-fuzz
+# Конфигурационный файл Sydr-fuzz
 
 * TOC
 {:toc}
@@ -338,6 +338,8 @@ path = "/target_fuzzer"
 args = "-dict=/json.dict -jobs=6 /corpus"
 cmin = true
 set_cover_merge = true
+proto_packer_path = "/packer"
+use_ft_coverage = false
 [libfuzzer.env]
     ASAN_OPTIONS = "allocator_may_return_null=0"
 ```
@@ -371,6 +373,16 @@ M - число аварийных завершений, зависаний и oo
 позволяет использовать для минимизации опцию libFuzzer `set_cover_merge`. Если
 параметр выключен, для минимизации используется опция `merge`.
 
+**proto_packer_path** - путь до packer-утилиты для гибридного фаззинга структурированных данных при
+помощи libFuzzer с [LPM](https://github.com/google/libprotobuf-mutator) в паре с Sydr.
+Утилита выполняет двустороннюю конвертацию между целевым форматом входных данных и protobuf-сообщениями.
+При наличии данного параметра в конфигурационном файле обязательно присутствие таблицы `[sydr]`.
+
+**use_ft_coverage** - булевый параметр (по умолчанию выключен), который позволяет
+учитывать метрику features (ft:) libFuzzer'а для отслеживания прироста покрытия. По
+умолчанию на факт прироста покрытия влияет только метрика coverage (cov:). При фаззинге
+Go-приложений (go-fuzz) метрика coverage отсутсвует, поэтому feature используется всегда.
+
 **[libfuzzer.env]** - таблица, содержащая значения переменных окружения, которые будут
 выставлены для каждого запускаемого процесса libFuzzer. Каждая строка таблицы задаёт
 строковую переменную, имя которой совпадает с именем соответствующей переменной окружения.
@@ -391,6 +403,7 @@ path = "/target_fuzzer"
 args = "-dict=/json.dict -jobs=6 /corpus"
 cmin = true
 set_cover_merge = true
+use_ft_coverage = false
 ld_preload = false
 [atheris.env]
     ASAN_OPTIONS = "allocator_may_return_null=0"
@@ -426,8 +439,10 @@ args = "--cp=/path/to/java/classes/ --asan -jobs=6 /corpus"
 target_class = "TargetClass"
 cmin = true
 set_cover_merge = true
+use_ft_coverage = false
 java = "/path/to/jvm/launcher/java"
 jacocolib = "/path/to/jacoco/lib"
+jacoco_args = "excludes=com.code_intelligence.jazzer.*\\:com.sun.tools.attach.VirtualMachine"
 [jazzer.env]
     LD_LIBRARY_PATH = "/path/to/native/libraries/"
 ```
@@ -446,6 +461,12 @@ jacocolib = "/path/to/jacoco/lib"
 
 **jacocolib** - путь до jar файлов библиотеки jacoco (необходимо для сбора
 покрытия, по умолчанию: `/usr/local/lib/jacoco/lib`).
+
+**jacoco_args** - дополнительные аргументы для библиотеки JaCoCo, которые передаются через опцию
+`--additional_jvm_args`. Параметр ожидает строку формата "arg1=value1,arg2=value2". С помощью данного
+параметра можно указать аргумент `excludes`, который позволяет избежать ошибок с одинаковыми именами
+разных классов при сборе покрытия. Аргумент `destfile` всегда задается автоматически, поэтому он
+не может быть указан в данном параметре.
 
 Jazzer поддерживает фаззинг C/C++ библиотек, загруженных JVM, например, через `System.load()`.
 Иногда требуется добавить пути, в которых будет производится поиск разделяемых
@@ -471,6 +492,7 @@ path = "/target_fuzzer"
 args = "-i=target_lib /corpus -- -dict=/json.dict -jobs=6"
 cmin = true
 set_cover_merge = true
+use_ft_coverage = false
 ld_preload = false
 [jazzer_js.env]
     ASAN_OPTIONS = "allocator_may_return_null=0"
@@ -590,6 +612,8 @@ use_minicover = false
 **tool_path** - путь до инструмента сбора покрытия `minicover` или `AltCover`. Если он был установлен
 как глобальный .NET инструмент, то он будет по умолчанию находиться в `$HOME/.dotnet/tools`.
 Параметр не обязателен, если путь добавлен в `$PATH` (в докере `sydr/ubuntu20.04-sydr-fuzz` уже добавлен).
+
+**proto_to_native_cov** - булевый параметр (по умолчанию `false`), который указывает, нужно ли конвертировать во время сбора покрытия результирующий корпус. Используется только при указанном в таблице `libfuzzer` параметре `proto_packer_path`.
 
 Таблица **[cov.env]** в случае C#-кода не используется, так как переменные окружения для сбора покрытия не
 используются в `minicover` и `AltCover`.

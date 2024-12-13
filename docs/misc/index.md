@@ -88,6 +88,11 @@ int main(int argc, char** argv)
 
 Таким же образом, из libFuzzer обертки можно получить обертки для AFL++.
 
+При использовании libFuzzer с [LPM](https://github.com/google/libprotobuf-mutator?tab=readme-ov-file#integrating-with-libfuzzer) в обертке с помощью
+макроса `DEFINE_PROTO_FUZZER` предлагается реализовать функцию `TestOneProtoInput`, которая
+получает в качестве входных данных protobuf-сообщение. Поэтому перед вызовом целевой функции
+обертка дополнительно должна осуществлять его [преобразование к соответствующему формату](https://chromium.googlesource.com/chromium/src/+/main/testing/libfuzzer/libprotobuf-mutator.md#Write-the-Fuzz-Target-and-Conversion-Code).
+
 ### Обертка AFL++
 
 Для AFL++ написание отдельной обертки не требуется, можно полностью использовать
