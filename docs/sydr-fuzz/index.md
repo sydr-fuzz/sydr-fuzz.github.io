@@ -7,20 +7,21 @@
 цикла разработки ПО. Sydr-fuzz сочетает в себе мощь инструмента динамического
 символьного выполнения Sydr и современных фаззеров. Sydr позволяет увеличивать
 покрытие кода и обнаруживать ошибки. На данный момент sydr-fuzz позволяет
-запускать Sydr вместе с [libFuzzer](https://www.llvm.org/docs/LibFuzzer.html) и
-[AFL++](https://aflplus.plus/), а также поддерживает фаззинг Python/CPython с
-помощью [Atheris](https://github.com/google/atheris), фаззинг Java с
-помощью [Jazzer](https://github.com/CodeIntelligenceTesting/jazzer), фаззинг JavaScript c
-помощью [Jazzer.js](https://github.com/CodeIntelligenceTesting/jazzer.js) и фаззинг C# с
-помощью [Sharpfuzz](https://github.com/Metalnem/sharpfuzz) для
+запускать Sydr вместе с [libFuzzer](https://www.llvm.org/docs/LibFuzzer.html),
+[AFL++](https://aflplus.plus/) и [Honggfuzz](https://honggfuzz.dev/), а также поддерживает
+фаззинг Python/CPython с помощью [Atheris](https://github.com/google/atheris),
+фаззинг Java с помощью [Jazzer](https://github.com/CodeIntelligenceTesting/jazzer),
+фаззинг JavaScript c помощью [Jazzer.js](https://github.com/CodeIntelligenceTesting/jazzer.js),
+фаззинг Lua с помощью [luzer](https://github.com/ligurio/luzer) и
+фаззинг C# с помощью [Sharpfuzz](https://github.com/Metalnem/sharpfuzz) для
 инструментации кода и [AFL++](https://aflplus.plus/) для фаззинга.
 Примеры уже настроенных фаззинг целей для sydr-fuzz можно найти в репозитории
 [OSS-Sydr-Fuzz](https://github.com/ispras/oss-sydr-fuzz). По сути sydr-fuzz
 реализует пайплайн фаззинга:
 
-- Гибридный фаззинг с помощью Sydr и одного из фаззеров (libFuzzer, AFL++),
-  фаззинг Python (Atheris), Java (Jazzer), JavaScript (Jazzer.js) и C# (Sharpfuzz):
-  `sydr-fuzz run`
+- Гибридный фаззинг с помощью Sydr и одного из фаззеров (libFuzzer, AFL++, Honggfuzz),
+  фаззинг Python (Atheris), Java (Jazzer), JavaScript (Jazzer.js), Lua (luzer)
+  и C# (Sharpfuzz): `sydr-fuzz run`
 - Минимизация корпуса: `sydr-fuzz cmin` (шаг обязателен для AFL++)
 - Поиск ошибок (выхода за границы буфера, целочисленного переполнения, деления
   на нуль и др.) символьными предикатами безопасности Sydr: `sydr-fuzz security`
@@ -46,41 +47,40 @@
     ISP RAS
     Continuous hybrid fuzzing and dynamic analysis for security development lifecycle
 
-    USAGE:
-        sydr-fuzz [OPTIONS] <SUBCOMMAND>
+    Usage: sydr-fuzz [OPTIONS] <COMMAND>
 
-    OPTIONS:
-        -c, --config <FILE>        Configuration file [default: sydr-fuzz.toml]
-        -h, --help                 Print help information
-        -l, --log-level <LEVEL>    Logging level [default: info] [possible values: minimal,
-                                   info, debug, trace]
-        -o, --output <OUT_DIR>     Output project directory with artifacts [default:
-                                   <CONFIG>-out]
-        -V, --version              Print version information
+    Commands:
+      run         Run hybrid fuzzing with Sydr and libFuzzer/AFL++/Honggfuzz, Python
+                      fuzzing with Atheris, Java fuzzing with Jazzer, JavaScript fuzzing with
+                      Jazzer.js, or C# fuzzing wiht Sharpfuzz
+      cmin        Minimize corpus
+      security    Check security predicates (out of bounds, integer overflow, division by
+                      zero, etc.) for corpus seeds
+      casr        Triage, deduplicate, cluster, and create reports for crashes and UBSAN
+                      runtime errors
+      rm-crashes  Remove crashes from corpus
+      cov-html    Generate HTML coverage report
+      cov-export  Collect and export corpus coverage in JSON or lcov trace file format
+      cov-report  Collect corpus coverage and display summary
+      cov-show    Collect and show line by line corpus coverage
+      pycov       Collect and export corpus coverage in specified format for Python
+                      targets
+      jacov       Collect and export corpus coverage in specified format for Java targets
+      jscov       Collect and export corpus coverage in specified format for JavaScript
+                      targets
+      sharpcov    Collect and export corpus coverage in specified format for C# targets
+      luacov      Collect and export corpus coverage for Lua targets
+      init        Create basic TOML config file template
+      help        Print this message or the help of the given subcommand(s)
 
-    SUBCOMMANDS:
-        casr          Triage, deduplicate, cluster, and create reports for crashes and
-                          UBSAN runtime errors
-        cmin          Minimize corpus
-        cov-export    Collect and export corpus coverage in JSON or lcov trace file format
-        cov-html      Generate HTML coverage report
-        cov-report    Collect corpus coverage and display summary
-        cov-show      Collect and show line by line corpus coverage
-        help          Print this message or the help of the given subcommand(s)
-        jacov         Collect and export corpus coverage in specified format for Java
-                          targets
-        jscov         Collect and export corpus coverage in specified format for JavaScript
-                          targets
-        pycov         Collect and export corpus coverage in specified format for Python
-                          targets
-        sharpcov      Collect and export corpus coverage in specified format for C#
-                          targets
-        rm-crashes    Remove crashes from corpus
-        run           Run hybrid fuzzing with Sydr and libFuzzer/AFL++, Python fuzzing
-                          with Atheris, Java fuzzing with Jazzer, or JavaScript fuzzing with
-                          Jazzer.js
-        security      Check security predicates (out of bounds, integer overflow, division
-                          by zero, etc.) for corpus seeds
+    Options:
+      -l, --log-level <LEVEL>  Logging level [default: info] [possible values: minimal, info,
+                               debug, trace]
+      -c, --config <FILE>      Configuration file [default: sydr-fuzz.toml]
+      -o, --output <OUT_DIR>   Output project directory with artifacts [default: <CONFIG>-out]
+      -h, --help               Print help
+      -V, --version            Print version
+
 
 Опция **-c, \--config \<FILE\>** указывает путь к конфигурационному файлу в TOML
 формате для запуска фаззинга (по умолчанию `sydr-fuzz.toml`).
@@ -101,46 +101,50 @@
     $ sydr-fuzz-init
     Create basic TOML config file template
 
-    USAGE:
-    sydr-fuzz init [OPTIONS]
+    Usage: sydr-fuzz init [OPTIONS]
 
-    OPTIONS:
-            --afl <RUN_TARGET_LINE>...          Add AFL++ table to TOML config template
-            --atheris <RUN_TARGET_LINE>...      Add Atheris table to TOML config template
-        -c, --corpus <corpus>                   Path to corpus directory
-            --cov <RUN_TARGET_LINE>...          Add coverage table to TOML config template
-        -h, --help                              Print help information
-            --jazzer <TARGET_CLASS>             Add Jazzer table to TOML config template
-            --jazzer-js <RUN_TARGET_LINE>...    Add Jazzer.js table to TOML config template
-            --libfuzzer <RUN_TARGET_LINE>...    Add libFuzzer table to TOML config template
-            --sharpfuzz <RUN_TARGET_LINE>...    Add Sharpfuzz table to TOML config template
-            --sydr <RUN_TARGET_LINE>...         Add Sydr table to TOML config template
+    Options:
+          --libfuzzer [<RUN_TARGET_LINE>...]  Add libFuzzer table to TOML config template
+          --afl [<RUN_TARGET_LINE>...]        Add AFL++ table to TOML config template
+          --honggfuzz [<RUN_TARGET_LINE>...]  Add Honggfuzz table to TOML config template
+          --sydr [<RUN_TARGET_LINE>...]       Add Sydr table to TOML config template
+          --cov [<RUN_TARGET_LINE>...]        Add coverage table to TOML config template
+      -c, --corpus <corpus>                   Path to corpus directory
+          --atheris [<RUN_TARGET_LINE>...]    Add Atheris table to TOML config template
+          --jazzer <TARGET_CLASS>             Add Jazzer table to TOML config template
+          --jazzer-js [<RUN_TARGET_LINE>...]  Add Jazzer.js table to TOML config template
+          --sharpfuzz [<RUN_TARGET_LINE>...]  Add Sharpfuzz table to TOML config template
+          --luzer [<TARGET_PATH>...]          Add luzer table to TOML config template
+      -h, --help                              Print help
+
+Опция **--libfuzzer** добавляет таблицу libFuzzer.
 
 Опция **--afl** добавляет таблицу AFL++.
 
-Опция **--atheris** добавляет таблицу Atheris (несовместима с другими таблицами).
+Опция **--honggfuzz** добавляет таблицу Honggfuzz.
 
-Опция **-c, --corpus** указывает путь до директории с корпусом.
+Опция **--sydr** добавляет таблицу Sydr.
 
 Опция **--cov**  добавляет таблицу для сбора покрытия (для компилируемых языков или C#)
 Может быть указана только вместе с одной из таблиц AFL++, libFuzzer, Sydr, Sharpfuzz.
+
+Опция **-c, --corpus** указывает путь до директории с корпусом.
+
+Опция **--atheris** добавляет таблицу Atheris (несовместима с другими таблицами).
 
 Опция **--jazzer** добавляет таблицу Jazzer (несовместима с другими таблицами).
 
 Опция **--jazzer-js** добавляет таблицу Jazzer.js (несовместима с другими таблицами).
 
-Опция **--libfuzzer** добавляет таблицу libFuzzer.
-
-Опция **--sydr** добавляет таблицу Sydr.
-
 Опция **--sharpfuzz** добавляет таблицу Sharpfuzz (несовместима с другими таблицами, кроме [cov]).
+
+Опция **--luzer** добавляет таблицу luzer.
 
 ### Опции запуска фаззинга
 
     $ sydr-fuzz run -h
-    sydr-fuzz-run
-    Run hybrid fuzzing with Sydr and libFuzzer/AFL++, Python fuzzing with Atheris, Java
-    fuzzing with Jazzer, or JavaScript fuzzing with Jazzer.js
+    Run hybrid fuzzing with Sydr and libFuzzer/AFL++/Honggfuzz, Python fuzzing with Atheris,
+    Java fuzzing with Jazzer, JavaScript fuzzing with Jazzer.js, or C# fuzzing wiht Sharpfuzz
 
     Usage: sydr-fuzz run [OPTIONS]
 
@@ -186,19 +190,17 @@ sydr-fuzz будет завершена.
 конфигурационном файле можно указать, необходимо ли производить минимизацию
 сгенерированных инструментом Sydr входных файлов.
 
-### Опции генерации HTML отчета о покрытии (C/C++/Rust/Python/Go/Java/JavaScript/C#)
+### Опции генерации HTML отчета о покрытии (C/C++/Rust/Python/Go/Java/JavaScript/C#/Lua)
 
     $ sydr-fuzz cov-html -h
-    sydr-fuzz-cov-html
     Generate HTML coverage report
 
-    USAGE:
-        sydr-fuzz cov-html [OPTIONS]
+    Usage: sydr-fuzz cov-html [OPTIONS]
 
-    OPTIONS:
-        -h, --help        Print help information
-        -j, --jobs <N>    Number of parallel jobs to collect and merge raw LLVM coverage
-                          [default: half of cpu cores]
+    Options:
+      -j, --jobs <N>  Number of parallel jobs to collect and merge raw LLVM coverage [default:
+                      half of cpu cores]
+      -h, --help      Print help
 
 Опция **-j, \--jobs \<N\>** позволяет задать количество потоков для сбора данных
 LLVM покрытия (не применяется для Python).
@@ -225,19 +227,17 @@ LLVM покрытия (не применяется для Python).
 после `--`:
 
     $ sydr-fuzz cov-report -h
-    sydr-fuzz-cov-report
     Collect corpus coverage and display summary
 
-    USAGE:
-        sydr-fuzz cov-report [OPTIONS] [-- <ARGS>...]
+    Usage: sydr-fuzz cov-report [OPTIONS] [-- [ARGS]...]
 
-    ARGS:
-        <ARGS>...    llvm-cov report extra options after --
+    Arguments:
+      [ARGS]...  llvm-cov report extra options after --
 
-    OPTIONS:
-        -h, --help        Print help information
-        -j, --jobs <N>    Number of parallel jobs to collect and merge raw coverage [default:
-                          half of cpu cores]
+    Options:
+      -j, --jobs <N>  Number of parallel jobs to collect and merge raw coverage [default: half
+                      of cpu cores]
+      -h, --help      Print help
 
 Опция **-j, \--jobs \<N\>** позволяет задать количество потоков для сбора данных покрытия.
 По умолчанию данное значение равно половине ядер процессора.
@@ -257,18 +257,16 @@ LLVM покрытия (не применяется для Python).
 ### Продвинутые опции сбора покрытия (Python)
 
     $ sydr-fuzz pycov -h
-    sydr-fuzz-pycov
     Collect and export corpus coverage in specified format for Python targets
 
-    USAGE:
-        sydr-fuzz pycov <FORMAT> [-- <ARGS>...]
+    Usage: sydr-fuzz pycov <FORMAT> [-- [ARGS]...]
 
-    ARGS:
-        <FORMAT>     Coverage format (report, html, xml, json, lcov, etc.)
-        <ARGS>...    coverage FORMAT extra options after --
+    Arguments:
+      <FORMAT>   Coverage format (report, html, xml, json, lcov, etc.)
+      [ARGS]...  coverage FORMAT extra options after --
 
-    OPTIONS:
-        -h, --help    Print help information
+    Options:
+      -h, --help  Print help
 
 Дополнительные аргументы **<ARGS>**, которые можно перечислить после `--`,
 представляют собой соответствующие опции и аргументы
@@ -277,18 +275,16 @@ LLVM покрытия (не применяется для Python).
 ### Продвинутые опции сбора покрытия (Java)
 
     $ sydr-fuzz jacov -h
-    sydr-fuzz-jacov
     Collect and export corpus coverage in specified format for Java targets
 
-    USAGE:
-        sydr-fuzz jacov <FORMAT> [-- <ARGS>...]
+    Usage: sydr-fuzz jacov <FORMAT> [-- [ARGS]...]
 
-    ARGS:
-        <FORMAT>     Coverage format (html, xml, csv) [possible values: html, xml, csv]
-        <ARGS>...    Extra jacococli options after --
+    Arguments:
+      <FORMAT>   Coverage format (html, xml, csv) [possible values: html, xml, csv]
+      [ARGS]...  Extra jacococli options after --
 
-    OPTIONS:
-        -h, --help    Print help information
+    Options:
+      -h, --help  Print help
 
 Дополнительные аргументы **<ARGS>**, которые можно перечислить после `--`,
 представляют собой соответствующие опции и аргументы
@@ -305,21 +301,19 @@ LLVM покрытия (не применяется для Python).
 ### Продвинутые опции сбора покрытия (JavaScript)
 
     $ sydr-fuzz jscov -h
-    sydr-fuzz-jscov
     Collect and export corpus coverage in specified format for JavaScript targets
 
-    USAGE:
-        sydr-fuzz jscov <FORMAT> [-- <ARGS>...]
+    Usage: sydr-fuzz jscov <FORMAT> [-- [ARGS]...]
 
-    ARGS:
-        <FORMAT>     Coverage format (clover, cobertura, html-spa, html, json-summary,
-                     json, lcov, lcovonly, teamcity, text-lcov, text-summary, text)
-                     [possible values: clover, cobertura, html-spa, html, json-summary,
-                     json, lcov, lcovonly, teamcity, text-lcov, text-summary, text]
-        <ARGS>...    Extra coverage options after --
+    Arguments:
+      <FORMAT>   Coverage format (clover, cobertura, html-spa, html, json-summary, json, lcov,
+                 lcovonly, teamcity, text-lcov, text-summary, text) [possible values: clover,
+                 cobertura, html-spa, html, json-summary, json, lcov, lcovonly, teamcity,
+                 text-lcov, text-summary, text]
+      [ARGS]...  Extra coverage options after --
 
-    OPTIONS:
-        -h, --help    Print help information
+    Options:
+      -h, --help  Print help
 
 Дополнительные аргументы **<ARGS>**, которые можно перечислить после `--`,
 представляют собой соответствующие опции и аргументы
@@ -328,19 +322,18 @@ LLVM покрытия (не применяется для Python).
 ### Продвинутые опции сбора покрытия (C#)
 
     $ sydr-fuzz sharpcov -h
-    sydr-fuzz-sharpcov
     Collect and export corpus coverage in specified format for C# targets
 
-    USAGE:
-        sydr-fuzz sharpcov <FORMAT> [-- <ARGS>...]
+    Usage: sydr-fuzz sharpcov <FORMAT> [-- [ARGS]...]
 
-    ARGS:
-        <FORMAT>     Coverage format (html, lcov, clover, coveralls, xml, opencover, cobertura, text)
-                    [possible values: html, lcov, clover, coveralls, xml, opencover, cobertura, text]
-        <ARGS>...    Extra minicover/altcover instrument options after --
+    Arguments:
+      <FORMAT>   Coverage format (html, lcov, clover, coveralls, xml, opencover, cobertura,
+                 text) [possible values: html, lcov, clover, coveralls, xml, opencover,
+                 cobertura, text]
+      [ARGS]...  Extra minicover/altcover instrument options after --
 
-    OPTIONS:
-        -h, --help    Print help information
+    Options:
+      -h, --help  Print help
 
 Дополнительные аргументы **<ARGS>**, которые можно перечислить после `--`,
 представляют собой соответствующие опции и аргументы
@@ -352,6 +345,18 @@ LLVM покрытия (не применяется для Python).
 `--localSource`, `--callContext`, `--methodpoint`, `--single`, `--linecover`, `--branchcover`.
 Как дополнительные аргументы `minicover instrument` можно добавлять опции `--sources`, `--assemblies`, `--tests`,
 `--exclude-sources`, `exclude-assemblies` и `exclude-tests`.
+
+### Продвинутые опции сбора покрытия (Lua)
+Сбор покрытия после фаззинга с помощью [luzer](https://github.com/ligurio/luzer) и движка
+libFuzzer (данный способ фаззинга поддерживается через sydr-fuzz) осуществляется посредством утилиты LuaCov:
+
+    # sydr-fuzz -c name.toml luacov
+    Collect and export corpus coverage for Lua targets
+
+    Usage: sydr-fuzz luacov
+
+    Options:
+      -h, --help  Print help
 
 ### Сбор покрытия (Go)
 
@@ -395,19 +400,17 @@ HTML output written to /tmp/cover2240572277/coverage.html
 ### Опции проверки предикатов безопасности (C/C++/Rust/Go)
 
     $ sydr-fuzz security -h
-    sydr-fuzz-security
     Check security predicates (out of bounds, integer overflow, division by zero, etc.) for
     corpus seeds
 
-    USAGE:
-        sydr-fuzz security [OPTIONS]
+    Usage: sydr-fuzz security [OPTIONS]
 
-    OPTIONS:
-        -f, --force-remove         Remove output project directory if it exists
-        -h, --help                 Print help information
-        -j, --jobs <N>             Number of Sydr jobs
-            --runs <N>             Check security predicates for N seeds from corpus
-        -t, --timeout <SECONDS>    Timeout (in seconds) for target execution [default: 30]
+    Options:
+      -f, --force-remove       Remove output project directory if it exists
+      -j, --jobs <N>           Number of Sydr jobs
+      -t, --timeout <SECONDS>  Timeout (in seconds) for target execution [default: 30]
+          --runs <runs>        Check security predicates for N seeds from corpus
+      -h, --help               Print help
 
 Опция **-f, \--force-remove** перезаписывает всю выходную директорию с проектом.
 
@@ -423,52 +426,31 @@ sydr-fuzz прекратит работу.
 ### Опции запуска анализа аварийных завершений и ошибок неопределенного поведения с помощью Casr
 
     $ sydr-fuzz casr -h
-    sydr-fuzz-casr
     Triage, deduplicate, cluster, and create reports for crashes and UBSAN runtime errors
 
-    USAGE:
-        sydr-fuzz casr [OPTIONS]
+    Usage: sydr-fuzz casr [OPTIONS]
 
-    OPTIONS:
-            --engagement <ENGAGEMENT>
-                DefectDojo engagement name [default: TOML config name + datetime]
-
-        -h, --help
-                Print help information
-
-            --ignore <FILE>
-                File with regular expressions for functions and file paths to filter in call
-                stacks
-
-        -j, --jobs <N>
-                Number of parallel jobs for crash triaging [default: half of cpu cores]
-
-            --no-casr-gdb
-                Do not collect crash reports via casr-gdb
-
-            --no-cluster
-                Do not cluster reports
-
-        -p
-                Use PATH environment variable to find casr tools
-
-            --product <PRODUCT>
-                DefectDojo product name (required when DefectDojo URL is provided)
-
-            --san-force
-                Force casr-san run without sanitizers symbols check
-
-        -t, --timeout <SECONDS>
-                Timeout (in seconds) for target execution [set 0 to disable] [default: 30]
-
-            --token <TOKEN>
-                DefectDojo API key (required when DefectDojo URL is provided)
-
-            --ubsan
-                Create and triage UndefinedBehaviorSanitizer reports
-
-            --url <URL>
-                Upload new and unique CASR reports to DefectDojo at base URL
+    Options:
+          --no-cluster               Do not cluster reports
+          --ubsan                    Create and triage UndefinedBehaviorSanitizer reports
+      -p                             Use PATH environment variable to find casr tools
+          --ignore <FILE>            File with regular expressions for functions and file
+                                     paths to filter in call stacks
+      -j, --jobs <N>                 Number of parallel jobs for crash triaging [default: half
+                                     of cpu cores]
+      -t, --timeout <SECONDS>        Timeout (in seconds) for target execution [set 0 to
+                                     disable] [default: 30]
+          --no-casr-gdb              Do not collect crash reports via casr-gdb
+          --san-force                Force casr-san run without sanitizers symbols check
+          --url <URL>                Upload new and unique CASR reports to DefectDojo at base
+                                     URL
+          --token <TOKEN>            DefectDojo API key (required when DefectDojo URL is
+                                     provided)
+          --product <PRODUCT>        DefectDojo product name (required when DefectDojo URL is
+                                     provided)
+          --engagement <ENGAGEMENT>  DefectDojo engagement name [default: TOML config name +
+                                     datetime]
+      -h, --help                     Print help
 
 Опция **\--ignore \<FILE\>** - позволяет задать файл с регулярными выражениями для функций и путей,
 которые будут отфильтрованы в стекax вызовов.
@@ -517,20 +499,18 @@ CASR отчетов в DefectDojo. Использование данной оп�
 ### Опции удаления аварийных завершений из корпуса
 
     $ sydr-fuzz rm-crashes -h
-    sydr-fuzz-rm-crashes
     Remove crashes from corpus
 
-    USAGE:
-        sydr-fuzz rm-crashes [OPTIONS] <PATH>
+    Usage: sydr-fuzz rm-crashes [OPTIONS] <PATH>
 
-    ARGS:
-        <PATH>    Path to corpus directory.
+    Arguments:
+      <PATH>  Path to corpus directory.
 
-    OPTIONS:
-        -h, --help                 Print help information
-        -j, --jobs <N>             Number of parallel jobs to run target on inputs [default:
-                                   half of cpu cores]
-        -t, --timeout <SECONDS>    Timeout (in seconds) for target execution [default: 30]
+    Options:
+      -j, --jobs <N>           Number of parallel jobs to run target on inputs [default: half
+                               of cpu cores]
+      -t, --timeout <SECONDS>  Timeout (in seconds) for target execution [default: 30]
+      -h, --help               Print help
 
 Аргумент **<PATH>** позволяет указать путь к корпусу.
 
@@ -551,6 +531,8 @@ CASR отчетов в DefectDojo. Использование данной оп�
 следующим именем: `<config-name>-out`. Директория с проектом имеет следующий вид:
 
     sydr-fuzz-out/
+    ├── <fuzzer>
+    │   └── ...
     ├── crashes
     │   ├── crash-deadbeaf
     │   ├── oom-cafebabe
@@ -559,23 +541,6 @@ CASR отчетов в DefectDojo. Использование данной оп�
     │   └── seed
     ├── corpus-old
     │   └── seed
-    ├── libfuzzer
-    │   └── fuzz-0.log
-    ├── aflplusplus
-    │   ├── afl_main-worker
-    │   │   ├── crashes
-    │   │   ├── hangs
-    │   │   └── queue
-    │   ├── afl_s01-worker
-    │   │   ├── crashes
-    │   │   ├── hangs
-    │   │   └── queue
-    │   ├── sydr-worker
-    │   │   ├── crashes
-    │   │   └── queue
-    │   └── logs
-    │       ├── afl_main.log
-    │       └── afl_s01.log
     ├── sydr
     │   ├── cache
     │   ├── logs
@@ -617,6 +582,55 @@ CASR отчетов в DefectDojo. Использование данной оп�
     └── sydr-fuzz-coverage.log
 
 
+Директория <fuzzer> является рабочей директорией фаззера. В зависимости от
+конфигурации анализа и выбранного инструмента фаззинга, директория проекта
+может содержать `libfuzzer`, `aflplusplus` (в т.ч. при использовании Sharpfuzz),
+`honggfuzz`, `atheris`, `jazzer` или `jazzer.js`. В случае ensemble-фаззинга могут
+присутствовать сразу несколько из перечисленных директорий. Директории `libFuzzer`,
+`atheris`, `jazzer` и `jazzer.js` содержат логи для каждого запущенного процесса
+фаззера (cmin.log, fuzz-0.log, fuzz-1.log и т.д.).
+
+    libfuzzer(athris,jazzer,jazzer.js)/
+    ├── cmin.log
+    └── fuzz-1.log
+
+Директория `aflplusplus` является общей выходной директорией для AFL++ и содержит
+директории `aflplusplus/*-worker` для каждого запущенного процесса AFL++ и Sydr
+(`sydr-worker` требуется для синхронизации между AFL++ и Sydr). В случае Sharpfuzz
+`sydr-worker` отсутствует. Каждая worker-директория содержит директории с рабочим
+корпусом (`queue`), найденными аварийными завершениями (`crashes`) и зависаниями
+(`hangs`). В директории `aflplusplus/logs` хранятся логи AFL++.
+
+    aflplusplus/
+    ├── afl_main-worker
+    │   ├── crashes
+    │   ├── hangs
+    │   └── queue
+    ├── afl_s01-worker
+    │   ├── crashes
+    │   ├── hangs
+    │   └── queue
+    ├── sydr-worker
+    │   ├── crashes
+    │   └── queue
+    └── logs
+        ├── afl_main.log
+        └── afl_s01.log
+
+Директория `honggfuzz` является рабочей директорией для Honggfuzz и содержит логи
+запуска фаззера (`cmin-0.log`, `fuzz-0.log`), общий лог с отчетами санитайзеров
+о найденных ошибках `HONGGFUZZ.REPORT.TXT`, файл со статистикой фаззинга `stats.txt`,
+директорию с найденными аварийными завершениями и зависаниями `crashes`, а также
+директорию для синхронизации с Sydr-ом `sydr-worker`.
+
+    honggfuzz/
+    ├── cmin-0.log
+    ├── fuzz-0.log
+    ├── HONGGFUZZ.REPORT.TXT
+    ├── stats.txt
+    ├── crashes/
+    └── sydr-worker/
+
 В директории `crashes` будут помещены все найденные c помощью фаззера и Sydr ошибки
 (crash-\*, oom-\*, timeout-\*, leak-\*). При фаззинге с AFL++ ошибки также сохраняются в
 выходных директориях фаззеров (`sydr-fuzz-out/aflplusplus/*-worker/(crashes|hangs)`).
@@ -632,14 +646,6 @@ CASR отчетов в DefectDojo. Использование данной оп�
 директория `corpus` содержит выходной минимизированный корпус, достигнутый
 в процессе фаззинга. Полный не минимизированный корпус сохраняется в директории
 `corpus-old`.
-
-В зависимости от конфигурации гибридного фаззинга, директория проекта содержит
-либо `libfuzzer`, либо `aflplusplus`. В директории `libfuzzer` хранятся логи libFuzzer'а.
-Директория `aflplusplus` является общей выходной директорией для AFL++ и содержит
-директории `aflplusplus/*-worker` для каждого запущенного процесса AFL++ и Sydr
-(`sydr-worker` требуется для синхронизации между AFL++ и Sydr). Кажая worker-директория
-содержит директории с рабочи корпусом (`queue`), найденными аварийными завершениями
-(`crashes`) и зависаниями (`hangs`). В директории `aflplusplus/logs` хранятся логи AFL++.
 
 `sydr` является рабочей директорией для всего пула Sydr'ов. В этой директории
 хранятся логи (`sydr/logs/log_<input-name>.txt`), аннотированные логи
@@ -675,7 +681,8 @@ Sydr в режиме проверки предикатов безопаснос�
     $ unzip sydr.zip
 
 Запустите подготовленный докер и примонтируйте директорию с конфигурационным
-файлом sydr-fuzz в директорию `/fuzz` внутри докера (`--privileged` необходим
+файлом sydr-fuzz в директорию `/fuzz` внутри докера (`--cap-add=SYS_PTRACE`,
+`--security-opt seccomp=unconfined` (либо просто `--privileged`) необходимы
 для работы Casr, а также позволяет
 докеру видеть локальный лицензионный USB ключ, `--network host` - сетевой ключ,
 также в докер пробрасывается время системы,
@@ -683,7 +690,8 @@ Sydr в режиме проверки предикатов безопаснос�
 [пробрасывания](https://docs.sentinel.thalesgroup.com/ldk/LDKdocs/SPNL/LDK_SLnP_Guide/Appendixes/Docker_containers.htm)
 драйвера Sentinel в докер):
 
-    $ sudo docker run --privileged --network host -v /etc/localtime:/etc/localtime:ro \
+    $ sudo docker run --cap-add=SYS_PTRACE  --security-opt seccomp=unconfined \
+        --network host -v /etc/localtime:/etc/localtime:ro \
         -v /var/hasplm:/var/hasplm -v /etc/hasplm:/etc/hasplm \
         --rm -it -v $PWD:/fuzz sydr-fuzz-target /bin/bash
 
@@ -720,11 +728,12 @@ Sydr в режиме проверки предикатов безопаснос�
     $ afl-plot name-out/aflplusplus/afl_main-worker plot_dir
 
 Число входных данных от Sydr, которые принесли покрытие фаззеру, печатается в
-логе как "[SYDR] Files reloaded by libFuzzer: {}, unique {}" для libFuzzer и
-"[SYDR] Files imported by AFL++: {}" для AFL++. Для libFuzzer дополнительно
-печатается число уникальных полезных файлов, поскольку каждый запущенный
-инстанс libFuzzer'а анализирует файлы независимо и один и тот же файл Sydr'а
-может учитываться несколько раз.
+логе как "[SYDR] Files reloaded by libFuzzer: {}, unique {}" для libFuzzer,
+"[SYDR] Files imported by AFL++: {}" для AFL++,
+"[SYDR] Files reloaded by Honggfuzz: {}" для Honggfuzz. Для libFuzzer
+дополнительно печатается число уникальных полезных файлов, поскольку
+каждый запущенный инстанс libFuzzer'а анализирует файлы независимо и один и
+тот же файл Sydr'а может учитываться несколько раз.
 
 Сами полезные файлы можно найти следующим образом.
 
@@ -736,13 +745,37 @@ Sydr в режиме проверки предикатов безопаснос�
 
     $ ls name-out/aflplusplus/afl_main-worker/queue | grep "sync:sydr-worker"
 
+Для Honggfuzz:
+
+    $ find name-out/honggfuzz -name "fuzz-*.log" | xargs -I {} grep "File imported" {}
+
 По завершении фаззинга результаты работы будут сохранены в `name-out/crashes`.
 Рекомендуется воспользоваться комнандой `cmin` (см. следующий раздел)
-для агрегации фаззинг-корпуса в `name-out/corpus`. В противном случае
-он будет содержаться либо в `name-out/aflplusplus/afl_main-worker/queue`
-(после финальной синхронизации AFL\_FINAL\_SYNC в afl++ v4.09c и выше),
-либо разбит по директориям AFL++ (`name-out/aflplusplus/*-worker/queue`) и
-libFuzzer (`name-out/libfuzzer/queue`).
+для агрегации и минимизации фаззинг-корпуса в `name-out/corpus`.
+В противном случае для AFL++ корпус будет содержаться либо в
+`name-out/aflplusplus/afl_main-worker/queue` (после финальной синхронизации
+AFL\_FINAL\_SYNC в afl++ v4.09c и выше), либо разбит по директориям
+`name-out/aflplusplus/*-worker/queue`.
+
+При гибридном фаззинге с AFL++ или Honggfuzz дополнительно выполняется минимизация
+всех входных данных, генерируемых символьным исполнителем Sydr. Это делается с целью
+уменьшить нагрузку на фаззер при синхронизации и сократить размеры корпусов данных,
+поскольку число таких инпутов может быть очень велико. В случае гибридного фаззинга
+с libFuzzer минимизация не требуется, поскольку фаззер каждую секунду сканирует
+корпус и сохраняет себе только полезные инпуты. В случае AFL++ и Honggfuzz все инпуты
+от Sydr cначала накапливаются в директории `output/sydr/sydr-bucket`, раз в минуту
+запускается минимизация, по результатам сохраняются только интересные инпуты
+(в `output/aflplusplus/sydr-worker/queue` или `output/honggfuzz/sydr-worker`).
+
+Для AFL++ минимизация выполняется с помощью утилиты afl-showmap и глобальной битовой карты,
+объединяемой между всеми запусками Sydr. Для Honggfuzz - с помощью запуска фаззера
+в режиме минимизации (--minimize) только на текущем наборе данных в `sydr-bucket`.
+Если Honggfuzz на каких-то целях работает слишком медленно, как альтернативу можно
+использовать libFuzzer-merge: путь для libFuzzer-обертки нужно указать в параметре
+"ilbfuzzer\_merge\_target" таблицы [honggfuzz] конфигурационного файла.
+
+Минимизация инпутов Sydr для AFL++ и Honggfuzz может быть полностью выключена
+с помощью параметра "minimize\_sydr\_inputs" таблицы [sydr] конфигурационного файла.
 
 ### Ensemble-фаззинг
 
@@ -781,7 +814,7 @@ Sydr инпуты. Поскольку число таких инпутов мо�
 `name-out/corpus-old`, минимизированный корпус будет в директории `name/corpus`.
 Минимизация корпуса может быть запущена в несколько параллельных потоков, при
 условии что утилита `afl-cmin` поддерживает такую функцию. Число параллельных
-потоков указывается с помощью параметра `cmin` таблицы `[aflplusplus]` в конфигурационном
+потоков указывается с помощью параметра `cmin` в конфигурационном
 файле. По умолчанию используется половина всех доступных ядер на машине.
 
 ## Сбор покрытия (C/C++/Rust)
@@ -923,6 +956,25 @@ use_minicover = false
 Инструмент `AltCover` используется по умолчанию, так как поддерживает возможность сбора покрытия
 в параллельном режиме.
 
+## Сбор покрытия (Lua)
+
+Sydr-fuzz позволяет собирать покрытие на корпусе для целевого Lua-приложения.
+Для этого можно добавить секцию `[cov]` в конфигурационный файл:
+
+```toml
+[luzer]
+target = "target.lua"
+
+[cov]
+target = "target_cov.lua"
+```
+
+**target** - путь до инструментируемой для сбора покрытия фаззинг-цели.
+
+Для генерации HTML отчета о покрытии можно воспользоваться следующей командой:
+
+    $ sydr-fuzz -c name.toml cov-html
+
 ## Сбор покрытия (Go)
 
 Sydr-fuzz позволяет собирать покрытие на корпусе для целевого Go-приложения.
@@ -964,26 +1016,7 @@ target = "/target_sydr"
 ## Отдельный запуск фаззера (C/C++/Rust/Go)
 
 Sydr-fuzz поддерживает запуск фаззера без Sydr. Для этого необходимо заполнить
-только секцию `[libfuzzer]`:
-
-```toml
-exit-on-time = 7200
-
-[libfuzzer]
-path = "/target_fuzzer"
-args = "-dict=/json.dict -jobs=6 /corpus"
-```
-
- или `[aflplusplus]`:
-
-```toml
-exit-on-time = 7200
-
-[aflplusplus]
-args = "-t 5000 -i /corpus"
-target = "/target_afl @@"
-jobs = 6
-```
+только секцию выбранного инструмента (без таблицы `[sydr]`).
 
 ## Итеративный анализ Sydr (C/C++/Rust/Go)
 

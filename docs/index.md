@@ -4,18 +4,21 @@
 цикла разработки ПО. Sydr-fuzz сочетает в себе мощь инструмента динамического
 символьного выполнения Sydr и современных фаззеров. Sydr позволяет увеличивать
 покрытие кода и обнаруживать ошибки. На данный момент sydr-fuzz позволяет
-запускать Sydr вместе с [libFuzzer](https://www.llvm.org/docs/LibFuzzer.html) и
-[AFL++](https://aflplus.plus/), а также поддерживает фаззинг Python/CPython с
-помощью [Atheris](https://github.com/google/atheris), фаззинг Java с
-помощью [Jazzer](https://github.com/CodeIntelligenceTesting/jazzer) и фаззинг JavaScript c
-помощью [Jazzer.js](https://github.com/CodeIntelligenceTesting/jazzer.js).
+запускать Sydr вместе с [libFuzzer](https://www.llvm.org/docs/LibFuzzer.html),
+[AFL++](https://aflplus.plus/) и [Honggfuzz](https://honggfuzz.dev/), а также поддерживает
+фаззинг Python/CPython с помощью [Atheris](https://github.com/google/atheris),
+фаззинг Java с помощью [Jazzer](https://github.com/CodeIntelligenceTesting/jazzer),
+фаззинг JavaScript c помощью [Jazzer.js](https://github.com/CodeIntelligenceTesting/jazzer.js),
+фаззинг Lua с помощью [luzer](https://github.com/ligurio/luzer) и
+фаззинг C# с помощью [Sharpfuzz](https://github.com/Metalnem/sharpfuzz) для
+инструментации кода и [AFL++](https://aflplus.plus/) для фаззинга.
 Примеры уже настроенных фаззинг целей для sydr-fuzz можно найти в репозитории
 [OSS-Sydr-Fuzz](https://github.com/ispras/oss-sydr-fuzz). По сути sydr-fuzz
 реализует пайплайн фаззинга:
 
-- Гибридный фаззинг с помощью Sydr и одного из фаззеров (libFuzzer, AFL++),
-  фаззинг Python (Atheris), Java (Jazzer) и JavaScript (Jazzer.js):
-  `sydr-fuzz run`
+- Гибридный фаззинг с помощью Sydr и одного из фаззеров (libFuzzer, AFL++, Honggfuzz),
+  фаззинг Python (Atheris), Java (Jazzer), JavaScript (Jazzer.js), Lua (luzer)
+  и C# (Sharpfuzz): `sydr-fuzz run`
 - Минимизация корпуса: `sydr-fuzz cmin` (шаг обязателен для AFL++)
 - Поиск ошибок (выхода за границы буфера, целочисленного переполнения, деления
   на нуль и др.) символьными предикатами безопасности Sydr: `sydr-fuzz security`
