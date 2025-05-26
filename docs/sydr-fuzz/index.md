@@ -681,19 +681,16 @@ Sydr в режиме проверки предикатов безопаснос�
     $ unzip sydr.zip
 
 Запустите подготовленный докер и примонтируйте директорию с конфигурационным
-файлом sydr-fuzz в директорию `/fuzz` внутри докера (`--cap-add=SYS_PTRACE`,
-`--security-opt seccomp=unconfined` (либо просто `--privileged`) необходимы
-для работы Casr, а также позволяет
-докеру видеть локальный лицензионный USB ключ, `--network host` - сетевой ключ,
-также в докер пробрасывается время системы,
-`-v /var/hasplm:/var/hasplm -v /etc/hasplm:/etc/hasplm` требуется для
-[пробрасывания](https://docs.sentinel.thalesgroup.com/ldk/LDKdocs/SPNL/LDK_SLnP_Guide/Appendixes/Docker_containers.htm)
-драйвера Sentinel в докер):
+файлом sydr-fuzz в директорию `/fuzz` внутри докера:
 
     $ sudo docker run --cap-add=SYS_PTRACE  --security-opt seccomp=unconfined \
         --network host -v /etc/localtime:/etc/localtime:ro \
         -v /var/hasplm:/var/hasplm -v /etc/hasplm:/etc/hasplm \
         --rm -it -v $PWD:/fuzz sydr-fuzz-target /bin/bash
+
+Опции `--cap-add=SYS_PTRACE` и `--security-opt seccomp=unconfined` (либо просто
+`--privileged`) нужны для работы Casr. Опция `--network host` нужна для подключения
+сетевого USB-ключа Sentinel.
 
 Зайдите в директорию `/fuzz`:
 

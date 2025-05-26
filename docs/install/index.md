@@ -3,6 +3,49 @@
 * TOC
 {:toc}
 
+# Использование лицензии Sentinel
+
+Для запуска инструмента требуется наличие лицензионного ключа Sentinel нужной версии:
+`YMYCK` (legacy-вендор) или `XEKDC` (текущий вендор). Хост, на котором запускается
+Sydr-fuzz должен находиться в одной сети с машиной, к котрой подключен USB-донгл
+Sentinel (или иметь VPN-соединение к такой сети). На обоих хостах необходимо наличие
+драйверов [Sentinel Runtime Environment](https://nextcloud.ispras.ru/index.php/s/xrtSXt8rMydRiFf/download?path=%2FLinux&files=aksusbd_9.12-1_amd64.deb):
+
+    $ wget -o log -O aksusbd_9.12-1_amd64.deb https://nextcloud.ispras.ru/index.php/s/xrtSXt8rMydRiFf/download?path=%2FLinux&files=aksusbd_9.12-1_amd64.deb
+    $ sudo dpkg -i aksusbd_9.12-1_amd64.deb
+
+Если после установки DEB-пакета ключ все равно невиден (при попытке запуска
+инструмента выдается ошибка `Sentinel key not found (H0007)`),
+необходимо явно указать IP-адрес хоста, к которому подключен USB-донгл.
+Это можно сделать двумя способами:
+- Через Sentinel Admin Control Center. Открыть в браузере страницу https://localhost:1947.
+  Перейти в `Configuration` -> `Access to Remote License Managers`. В текстовое поле
+  `Remote License Search Parameters` вбить нужный IP-адрес. На вкладке `Sentinel Keys` в
+  течение минуты должен появиться нужный USB-донгл.
+- Через конфигурационный файл Sentinel. [Скачать](https://github.com/ispras/crusher/blob/master/Examples/Crusher/Linux/nginx_docker/docker/license/hasplm-template.ini)
+  и сохранить шаблон конфигурации как `/etc/hasplm/hasplm.ini`. В поле `serveraddr`
+  необходимо заменить X.X.X.X на нужный IP-адрес. В течение минуты USB-донгл должен
+  обнаружиться.
+
+При использовании Sydr-fuzz в докер-контейнере, запуск докера необходимо проводить
+с опцией `--network host`. Этого достаточно, если на хостовой машине уже установлены
+драйвера Sentinel Runtime Environment. Если на хостовой машине драйверов нет, их
+можно установить напрямую в докер-контейнере. Для этого в Dockerfile нужно скачать
+у установить DEB-пакет с драйверами, создать и настроить /etc/hasplm/hasplm.ini файл.
+Стоит отметить, что в некоторых случаях, при запуске построенного докер-контейнера
+для работы драйверов Sentinel необходимо дополнительно выполнить команду:
+
+    $ /usr/sbin/hasplmd -s
+
+При возникновении проблем с докером, в некоторый случаях может помочь
+[пробрасывание](https://docs.sentinel.thalesgroup.com/ldk/LDKdocs/SPNL/LDK_SLnP_Guide/Appendixes/Docker_containers.htm)
+драйвера Sentinel в докер: `-v /var/hasplm:/var/hasplm -v /etc/hasplm:/etc/hasplm`.
+
+Для работы лицензионного ключа на Astra Linux требуется разрешить трассировку
+ptrace: Пуск -> Панель управления -> Безопасность -> Политика безопасности ->
+Настройка безопасности -> Системные параметры -> Снять галочку с "Блокировать
+трассировку ptrace для всех пользователей".
+
 # Минимальные системные требования
 
 - Операционная система: Ubuntu 18.04/20.04/22.04, Astra 1.7, ALT Workstation 10.0 и
@@ -21,21 +64,6 @@
 Перед установкой инструмента установите следующие зависимости.
 
     $ sudo apt install gcc-multilib binutils lsb-release gdb lcov
-
-Для корректной работы лицензионного USB ключа требуется установить последнюю
-версию
-[Sentinel HASP/LDK Run-time Environment](https://supportportal.thalesgroup.com/csm?id=kb_search&u_related_product_names=50303b92db852e00d298728dae96199d&query=kbcat_drivers_%26_runtime_packages&_runtime_packages&spa=1&u_all_related_operating_systems=66689e154fe293409a523c728110c74c)
-(перед установкой желательно вынуть USB ключ, и вставить его назад по завершении
-установки):
-
-    $ tar xf aksusbd*.tar.gz
-    $ cd aksusbd*
-    $ sudo ./dinst
-
-Для работы лицензионного ключа на Astra Linux требуется разрешить трассировку
-ptrace: Пуск -> Панель управления -> Безопасность -> Политика безопасности ->
-Настройка безопасности -> Системные параметры -> Снять галочку с "Блокировать
-трассировку ptrace для всех пользователей".
 
 # Установка
 
