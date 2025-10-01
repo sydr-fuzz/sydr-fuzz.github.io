@@ -121,3 +121,18 @@
    \[[статья](https://arxiv.org/abs/2312.06425)\]
    \[[слайды](https://vishnya.xyz/mirror/mezhuev-ispopen2023.pdf)\]
    \[[видео](https://www.youtube.com/watch?v=oMpSgMFFiXc&t=18608s)\]
+19. Parygina D., Mezhuev T., Kuts D. LibAFL-DiFuzz: Advanced Architecture
+    Enabling Directed Fuzzing.
+   2024 Ivannikov ISPRAS Open Conference (ISPRAS), IEEE.
+   \[[статья](https://arxiv.org/abs/2412.19143)\]
+   \[[слайды](https://sydr-fuzz.github.io/papers/parygina-libafl-difuzz-ispopen2024.pdf)\]
+   \[[видео](https://vkvideo.ru/video-214485707_456239026?t=4h18m27s)\]
+20. Parygina D., Mezhuev T., Kuts D. Hybrid Approach to Directed Fuzzing.
+   2025 Ivannikov Memorial Workshop (IVMEM).
+   \[[статья](https://arxiv.org/abs/2507.04855)\]
+   \[[слайды](https://sydr-fuzz.github.io/papers/parygina-hybrid-difuzz-ivmem2025.pdf)\]
+   \[[видео](https://vkvideo.ru/video-214485707_456239047?t=4h29m47s)\]
+21. Парыгина Д.А. Поиск иглы в стоге кода: гибридный направленный фаззинг с
+    LibAFL и Sydr. OFFZONE 2025.
+   \[[слайды](https://sydr-fuzz.github.io/papers/parygina-libafl-difuzz-sydr-offzone2025.pdf)\]
+   \[[видео](https://vkvideo.ru/video-172362100_456239295?list=ln-kOIokcaRo2rkMkewtM)\]
