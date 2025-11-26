@@ -15,12 +15,14 @@ enables [error detection](https://arxiv.org/abs/2111.05770). Sydr uses
 
 **Sydr-Fuzz** is a dynamic analysis tool for security development lifecycle. It
 combines fuzzing ([libFuzzer](https://www.llvm.org/docs/LibFuzzer.html),
-[AFL++](https://aflplus.plus)) with the power of dynamic symbolic execution
+[AFL++](https://aflplus.plus), [Honggfuzz](https://honggfuzz.dev/), LibAFL-DiFuzz)
+with the power of dynamic symbolic execution
 ([Sydr](https://arxiv.org/abs/2011.09269)). Sydr-Fuzz implements the following
 fuzzing pipeline:
 
-* Hybrid fuzzing with Sydr and libFuzzer/AFL++; coverage-guided Python (Atheris),
-  Java (Jazzer) and JavaScript (Jazzer.js) fuzzing: `sydr-fuzz run`
+* Hybrid fuzzing with Sydr and libFuzzer/AFL++/Honggfuzz/LibAFL-DiFuzz;
+  coverage-guided Python (Atheris, python-afl), Java (Jazzer), JavaScript (Jazzer.js),
+  Lua (luzer), and C# (Sharpfuzz) fuzzing: `sydr-fuzz run`
 * Corpus minimization: `sydr-fuzz cmin`
 * Error detection (out of bounds, integer overflow, numeric truncation, division
   by zero, etc.) via
@@ -38,31 +40,30 @@ significant number of
 [trophies](https://github.com/ispras/oss-sydr-fuzz/blob/master/TROPHIES.md).
 Moreover, we [compare](fuzzbench) Sydr-Fuzz with existing fuzzers.
 
-Sydr-Fuzz supports multiple programming languages including C/C++
-([libFuzzer](https://www.llvm.org/docs/LibFuzzer.html)/[AFL++](https://aflplus.plus)),
-Rust
-([cargo-fuzz](https://github.com/rust-fuzz/cargo-fuzz)/[afl.rs](https://github.com/rust-fuzz/afl.rs)),
-Go ([go-fuzz](https://github.com/dvyukov/go-fuzz)), Python
-([Atheris](https://github.com/google/atheris)), and Java
-([Jazzer](https://github.com/CodeIntelligenceTesting/jazzer)). All languages
-except Python and Java
-support symbolic execution with Sydr.
-
 # Guides
+
+## Fuzzing with Sydr-Fuzz
 
 * **C/C++**: Fuzzing xlnt project with sydr-fuzz for fun and profit (libFuzzer)
   \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-xlnt-project-with-sydr-fuzz-for-fun-and-profit)\] \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-xlnt-project-with-sydr-fuzz-for-fun-and-profit-%28rus%29)\]
 * **C/C++**: Fuzzzing FreeImage project with Sydr and AFLplusplus \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzzing-FreeImage-project-with-Sydr-and-AFLplusplus)\] \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzzing-FreeImage-project-with-Sydr-and-AFLplusplus-%28rus%29)\]
-* **Rust**: Fuzzing goblin (Rust) project with Sydr and AFLplusplus \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-goblin-%28Rust%3Acrab%3A%21%29-project-with-Sydr-and-AFLplusplus)\] \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-goblin-%28Rust%3Acrab%3A%21%29-project-with-Sydr-and-AFLplusplus-%28rus%29)\]
-* **Python**: Fuzzing ruamel-yaml (Python) project with  sydr-fuzz (Atheris backend) \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-ruamel-yaml-%28Python%29-project-with--sydr-fuzz-%28Atheris-backend%29)\] \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-ruamel-yaml-%28Python%29-project-with--sydr-fuzz-%28Atheris-backend%29-%28rus%29)\]
-* **Go**: Fuzzing golang/image (Go) project with sydr-fuzz (go-fuzz backend) \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-golang-image-%28Go%29-project-with--sydr-fuzz-%28go-fuzz-backend%29)\] \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-golang-image-%28Go%29-project-with--sydr-fuzz-%28go-fuzz-backend%29-%28rus%29)\]
-* **Java**: Fuzzing json‐sanitizer (Java) project with sydr‐fuzz (Jazzer backend)
+* **Rust**: Fuzzing goblin project with Sydr and AFLplusplus \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-goblin-%28Rust%3Acrab%3A%21%29-project-with-Sydr-and-AFLplusplus)\] \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-goblin-%28Rust%3Acrab%3A%21%29-project-with-Sydr-and-AFLplusplus-%28rus%29)\]
+* **Python**: Fuzzing ruamel-yaml project with  sydr-fuzz (Atheris and python-afl backends) \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-ruamel-yaml-%28Python%29-project-with--sydr-fuzz)\] \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-ruamel-yaml-%28Python%29-project-with--sydr-fuzz-%28rus%29)\]
+* **Go**: Fuzzing golang/image project with sydr-fuzz (go-fuzz backend) \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-golang-image-%28Go%29-project-with--sydr-fuzz-%28go-fuzz-backend%29)\] \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-golang-image-%28Go%29-project-with--sydr-fuzz-%28go-fuzz-backend%29-%28rus%29)\]
+* **Java**: Fuzzing json‐sanitizer project with sydr‐fuzz (Jazzer backend)
   \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-json%E2%80%90sanitizer-%28Java%29-project-with-sydr%E2%80%90fuzz-%28Jazzer-backend%29)\]
   \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-json%E2%80%90sanitizer-%28Java%29-project-with-sydr%E2%80%90fuzz-%28Jazzer-backend%29-%28rus%29)\]
-* **JavaScript**: Fuzzing fast-xml-parser (JavaScript) project with sydr-fuzz (Jazzer.js backend) \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-fast%E2%80%90xml%E2%80%90parser-%28JavaScript%29-project-with-sydr%E2%80%90fuzz-%28Jazzer.js-backend%29)\]
+* **JavaScript**: Fuzzing fast-xml-parser project with sydr-fuzz (Jazzer.js backend) \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-fast%E2%80%90xml%E2%80%90parser-%28JavaScript%29-project-with-sydr%E2%80%90fuzz-%28Jazzer.js-backend%29)\]
   \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-fast%E2%80%90xml%E2%80%90parser-%28JavaScript%29-project-with-sydr%E2%80%90fuzz-%28Jazzer.js-backend%29-%28rus%29)\]
 * **C#**: Fuzzing YamlDotNet project with sydr‐fuzz (AFL and Sharpfuzz backend) \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-YamlDotNet-%28C%23%29-project-with-sydr%E2%80%90fuzz-%28AFL-and-Sharpfuzz-backend%29-%28eng%29)\]
   \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Fuzzing-YamlDotNet-%28C%23%29-project-with-sydr%E2%80%90fuzz-%28AFL-and-Sharpfuzz-backend%29-%28rus%29)\]
+* **LPM-mutator**: Hybrid fuzzing jsoncpp project with Sydr and libfuzzer with libprotobuf-mutator \[[rus](https://github.com/ispras/oss-sydr-fuzz/wiki/%D0%93%D0%B8%D0%B1%D1%80%D0%B8%D0%B4%D0%BD%D1%8B%D0%B9-%D1%84%D0%B0%D0%B7%D0%B7%D0%B8%D0%BD%D0%B3-%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D0%B0-jsoncpp-%D1%81-%D0%BF%D0%BE%D0%BC%D0%BE%D1%89%D1%8C%D1%8E-Sydr-%D0%B8-libfuzzer-%D1%81-LPM)\]
+
+## Directed fuzzing with Sydr-Fuzz and LibAFL-DiFuzz:
+
+* **C/C++**: Directed fuzzing for xlnt project with sydr‐fuzz and LibAFL‐DiFuzz \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Directed-fuzzing-for-xlnt-project-with-sydr%E2%80%90fuzz-%28LibAFL%E2%80%90DiFuzz-backend%29)\] \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Directed-fuzzing-for-xlnt-project-with-sydr%E2%80%90fuzz-%28LibAFL%E2%80%90DiFuzz-backend%29-%28rus%29)\]
+* **Rust**: Directed fuzzing for goblin project with sydr‐fuzz and LibAFL‐DiFuzz \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Directed-fuzzing-for-goblin-project-with-sydr%E2%80%90fuzz-%28LibAFL%E2%80%90DiFuzz-backend%29)\] \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Directed-fuzzing-for-goblin-project-with-sydr%E2%80%90fuzz-%28LibAFL%E2%80%90DiFuzz-backend%29-%28rus%29)\]
+* **Go**: Directed fuzzing for golang/image project with sydr‐fuzz and LibAFL‐DiFuzz \[[english](https://github.com/ispras/oss-sydr-fuzz/wiki/Directed-fuzzing-for-golang-image-%28Go%29-project-with-sydr%E2%80%90fuzz-%28LibAFL%E2%80%90DiFuzz-backend%29)\] \[[russian](https://github.com/ispras/oss-sydr-fuzz/wiki/Directed-fuzzing-for-golang-image-%28Go%29-project-with-sydr%E2%80%90fuzz-%28LibAFL%E2%80%90DiFuzz-backend%29-%28rus%29)\]
 
 # Open Source Projects
 

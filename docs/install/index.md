@@ -116,6 +116,54 @@ AFL++ активно разрабатывается, поэтому желате
 [репозитория](https://github.com/google/honggfuzz)). Для работы Honggfuzz также необходимо
 установить дополнительные пакеты `binutils-dev`, `libunwind-dev` и `libblocksruntime-dev`.
 
+## Зависимости LibAFL-DiFuzz
+
+Для запуска фаззинга необходимо установить следующие зависимости:
+
+Boost:
+
+    $ wget http://security.ubuntu.com/ubuntu/pool/main/b/boost1.71/libboost-system1.71.0_1.71.0-6ubuntu6_amd64.deb && \
+      apt install -y ./libboost-system1.71.0_1.71.0-6ubuntu6_amd64.deb
+    $ wget http://security.ubuntu.com/ubuntu/pool/main/b/boost1.71/libboost-filesystem1.71.0_1.71.0-6ubuntu6_amd64.deb && \
+      apt install -y ./libboost-filesystem1.71.0_1.71.0-6ubuntu6_amd64.deb
+    $ wget http://security.ubuntu.com/ubuntu/pool/main/b/boost1.71/libboost-thread1.71.0_1.71.0-6ubuntu6_amd64.deb && \
+      apt install -y ./libboost-thread1.71.0_1.71.0-6ubuntu6_amd64.deb
+    $ wget http://security.ubuntu.com/ubuntu/pool/main/b/boost1.71/libboost-program-options1.71.0_1.71.0-6ubuntu6_amd64.deb && \
+      apt install -y ./libboost-program-options1.71.0_1.71.0-6ubuntu6_amd64.deb
+
+libTBB:
+
+    $ apt-get update && apt-get -y install libtbb-dev
+
+Для языков `C`/`C++` необходимы следующие зависимости:
+
+* библиотека `libforkserver`;
+* фаззер `libafl_difuzz`;
+* компиляторы `libafl_cc` и `libafl_cxx` для сборки фаззинг целей на языках `C` и `C++` соответственно;
+* инструмент для статической инструментации `DiFuzz`;
+* компиляторы `wllvm` и `wllvm++` для сборки целей для статического анализа инструментом `DiFuzz`;
+* утилита `ETSSharedManager` и `insert_forkserver.py` для сборки целевого бинарного файла под фаззинг.
+
+Для языка `Rust` необходимы следующие зависимости:
+
+* фаззер `libafl_difuzz`;
+* компилятор `libafl_rustc` для сборки `Rust` фаззинг целей, включая его тулчейн `rust-difuzz` и библиотеку `libforkserver-rs`;
+* инструмент для статической инструментации `DiFuzz-Rust`;
+* утилита `ETSSharedManager` и `insert_forkserver.py` для сборки целевого бинарного файла под фаззинг.
+
+Для языка `Go` необходимы следующие зависимости:
+
+* библиотека `libforkserver`;
+* фаззер `libafl_difuzz`;
+* инструментаторы `goinstr_difuzz` и `goinstr_sancov`;
+* инструмент для статической инструментации `DiFuzz-Go`;
+* Go-тулчейн (желательно версии выше 1.21) для сборки фаззинг целей.
+
+Также рекомендуется собирать фаззинг цели с помощью шаблона обертки LibAFL-DiFuzz и утилиты `gen_target.py`,
+позволяющей сгенерировать обертку с нужными именами и путями до файлов. Поддерживется генерация шаблонов для
+всех вышеупомянутых языков. Для сборки с помощью шаблона необходимы Rust-тулчейны версии не ниже `1.84-nightly`
+и утилита `cargo make`.
+
 ## Зависимости Atheris
 
 Библиотека фаззинга Atheris и все необходимые утилиты уже установлены в нашем докере

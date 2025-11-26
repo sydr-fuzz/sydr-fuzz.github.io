@@ -5,8 +5,8 @@
 символьного выполнения Sydr и современных фаззеров. Sydr позволяет увеличивать
 покрытие кода и обнаруживать ошибки. На данный момент sydr-fuzz позволяет
 запускать Sydr вместе с [libFuzzer](https://www.llvm.org/docs/LibFuzzer.html),
-[AFL++](https://aflplus.plus/) и [Honggfuzz](https://honggfuzz.dev/), а также поддерживает
-фаззинг Python/CPython с помощью [Atheris](https://github.com/google/atheris),
+[AFL++](https://aflplus.plus/), [Honggfuzz](https://honggfuzz.dev/) и LibAFL-DiFuzz,
+а также поддерживает фаззинг Python/CPython с помощью [Atheris](https://github.com/google/atheris) и [python-afl](https://github.com/jwilk/python-afl),
 фаззинг Java с помощью [Jazzer](https://github.com/CodeIntelligenceTesting/jazzer),
 фаззинг JavaScript c помощью [Jazzer.js](https://github.com/CodeIntelligenceTesting/jazzer.js),
 фаззинг Lua с помощью [luzer](https://github.com/ligurio/luzer) и
@@ -16,8 +16,8 @@
 [OSS-Sydr-Fuzz](https://github.com/ispras/oss-sydr-fuzz). По сути sydr-fuzz
 реализует пайплайн фаззинга:
 
-- Гибридный фаззинг с помощью Sydr и одного из фаззеров (libFuzzer, AFL++, Honggfuzz),
-  фаззинг Python (Atheris), Java (Jazzer), JavaScript (Jazzer.js), Lua (luzer)
+- Гибридный фаззинг с помощью Sydr и одного из фаззеров (libFuzzer, AFL++, Honggfuzz, LibAFL-DiFuzz),
+  фаззинг Python (Atheris, python-afl), Java (Jazzer), JavaScript (Jazzer.js), Lua (luzer)
   и C# (Sharpfuzz): `sydr-fuzz run`
 - Минимизация корпуса: `sydr-fuzz cmin` (шаг обязателен для AFL++)
 - Поиск ошибок (выхода за границы буфера, целочисленного переполнения, деления
