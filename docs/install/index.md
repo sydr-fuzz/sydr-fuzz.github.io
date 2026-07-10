@@ -1,18 +1,16 @@
-# Зависимости и установка Sydr-fuzz
+# Использование лицензии Sentinel
 
 * TOC
 {:toc}
-
-# Использование лицензии Sentinel
 
 Для запуска инструмента требуется наличие лицензионного ключа Sentinel нужной версии:
 `YMYCK` (legacy-вендор) или `XEKDC` (текущий вендор). Хост, на котором запускается
 Sydr-fuzz должен находиться в одной сети с машиной, к котрой подключен USB-донгл
 Sentinel (или иметь VPN-соединение к такой сети). На обоих хостах необходимо наличие
-драйверов [Sentinel Runtime Environment](https://nextcloud.ispras.ru/index.php/s/xrtSXt8rMydRiFf/download?path=%2FLinux&files=aksusbd_9.12-1_amd64.deb):
+драйверов [Sentinel Runtime Environment](https://nextcloud.ispras.ru/index.php/s/xrtSXt8rMydRiFf/download?path=%2FLinux&files=aksusbd_10.11-1_amd64.deb):
 
-    $ wget -o log -O aksusbd_9.12-1_amd64.deb https://nextcloud.ispras.ru/index.php/s/xrtSXt8rMydRiFf/download?path=%2FLinux&files=aksusbd_9.12-1_amd64.deb
-    $ sudo dpkg -i aksusbd_9.12-1_amd64.deb
+    $ wget --user="xrtSXt8rMydRiFf" --password="" --content-disposition https://nextcloud.ispras.ru/public.php/webdav/Linux/aksusbd_10.11-1_amd64.deb
+    $ sudo dpkg -i aksusbd_10.11-1_amd64.deb
 
 Если после установки DEB-пакета ключ все равно невиден (при попытке запуска
 инструмента выдается ошибка `Sentinel key not found (H0007)`),
@@ -40,6 +38,10 @@ Sentinel (или иметь VPN-соединение к такой сети). Н
 При возникновении проблем с докером, в некоторый случаях может помочь
 [пробрасывание](https://docs.sentinel.thalesgroup.com/ldk/LDKdocs/SPNL/LDK_SLnP_Guide/Appendixes/Docker_containers.htm)
 драйвера Sentinel в докер: `-v /var/hasplm:/var/hasplm -v /etc/hasplm:/etc/hasplm`.
+
+Также, при возникновении ошибок "Sentinel key not found (H0007)" из-за частого
+обращения к лицензионному ключу, можно использовать скрипт `sydr-fuzz.sh` для
+запуска инструмента.
 
 Для работы лицензионного ключа на Astra Linux требуется разрешить трассировку
 ptrace: Пуск -> Панель управления -> Безопасность -> Политика безопасности ->
@@ -120,20 +122,20 @@ AFL++ активно разрабатывается, поэтому желате
 
 Для запуска фаззинга необходимо установить следующие зависимости:
 
-Boost:
+LLVM-18:
 
-    $ wget http://security.ubuntu.com/ubuntu/pool/main/b/boost1.71/libboost-system1.71.0_1.71.0-6ubuntu6_amd64.deb && \
-      apt install -y ./libboost-system1.71.0_1.71.0-6ubuntu6_amd64.deb
-    $ wget http://security.ubuntu.com/ubuntu/pool/main/b/boost1.71/libboost-filesystem1.71.0_1.71.0-6ubuntu6_amd64.deb && \
-      apt install -y ./libboost-filesystem1.71.0_1.71.0-6ubuntu6_amd64.deb
-    $ wget http://security.ubuntu.com/ubuntu/pool/main/b/boost1.71/libboost-thread1.71.0_1.71.0-6ubuntu6_amd64.deb && \
-      apt install -y ./libboost-thread1.71.0_1.71.0-6ubuntu6_amd64.deb
-    $ wget http://security.ubuntu.com/ubuntu/pool/main/b/boost1.71/libboost-program-options1.71.0_1.71.0-6ubuntu6_amd64.deb && \
-      apt install -y ./libboost-program-options1.71.0_1.71.0-6ubuntu6_amd64.deb
+    $ wget https://apt.llvm.org/llvm.sh && chmod +x llvm.sh && sudo ./llvm.sh 18 all
 
-libTBB:
+Boost 1.71:
 
-    $ apt-get update && apt-get -y install libtbb-dev
+    $ sudo apt-get update && sudo apt-get -y install libboost1.71-all-dev
+
+libTBB2:
+
+    $ # На Ubuntu22.04
+    $ sudo apt-get update && sudo apt-get -y install libtbb2-dev
+    $ # На Ubuntu20.04
+    $ sudo apt-get update && sudo apt-get -y install libtbb-dev
 
 Для языков `C`/`C++` необходимы следующие зависимости:
 
